@@ -12,7 +12,8 @@ fun DrawScope.drawEyes(
     leftEyeSize: Size,
     rightEyeSize: Size,
     eyeSweepAngle: Map<EyelidPosition, Float>,
-    eyesOffsetHeight: Float
+    eyesOffsetHeight: Float,
+    eyesColor: Color = Color.White
 ) {
     drawPath(
         path = Path().apply {
@@ -61,7 +62,7 @@ fun DrawScope.drawEyes(
                 forceMoveTo = true
             )
         },
-        color = Color.White,
+        color = eyesColor,
         style = Stroke(width = 20F)
     )
 }

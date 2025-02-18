@@ -12,10 +12,13 @@ fun calculateLeftEyeSize(eyeState: EyeState): Size {
         EyeState.Ordinary,
         EyeState.Smile,
         EyeState.OKay,
+        EyeState.Mute,
         EyeState.Cry -> Size(60F, 100F)
 
         EyeState.Blink,
         EyeState.ColdSweat -> Size(60F, 1F)
+
+        EyeState.Angry -> Size(20F,20F)
     }
 }
 
@@ -29,10 +32,13 @@ fun calculateRightEyeSize(eyeState: EyeState): Size {
         EyeState.Ordinary,
         EyeState.Smile,
         EyeState.OKay,
+        EyeState.Mute,
         EyeState.Cry -> Size(60F, 100F)
 
         EyeState.Blink,
         EyeState.ColdSweat -> Size(60F, 1F)
+
+        EyeState.Angry -> Size(20F,20F)
     }
 }
 
@@ -48,6 +54,8 @@ fun calculateEyeSpacing(eyeState: EyeState): Float {
         EyeState.OKay,
         EyeState.Cry,
         EyeState.Blink,
+        EyeState.Mute,
+        EyeState.Angry,
         EyeState.ColdSweat -> 50F
     }
 }
@@ -63,6 +71,8 @@ fun calculateEyeDegrees(eyeState: EyeState): Float {
         EyeState.ColdSweat,
         EyeState.FingerHeart,
         EyeState.PlayMusic,
+        EyeState.Mute,
+        EyeState.Angry,
         EyeState.Smile -> 0
 
         EyeState.OKay -> 10
@@ -74,13 +84,15 @@ fun calculateEyeDegrees(eyeState: EyeState): Float {
  */
 fun calculateEyeOffsetHeight(eyeState: EyeState): Float {
     return when (eyeState) {
-        EyeState.ColdSweat -> 30
+        EyeState.ColdSweat,
         EyeState.OKay,
         EyeState.Ordinary,
         EyeState.Cry,
         EyeState.Blink,
         EyeState.PlayMusic,
         EyeState.FingerHeart,
+        EyeState.Mute,
+        EyeState.Angry,
         EyeState.Smile -> -30
     }.toFloat()
 }
@@ -99,6 +111,8 @@ fun calculateEyesSweepAngle(key: EyelidPosition, eyeState: EyeState): Float {
                 EyeState.Smile,
                 EyeState.Blink,
                 EyeState.OKay,
+                EyeState.Mute,
+                EyeState.Angry,
                 EyeState.Ordinary -> -180
 
                 EyeState.Cry -> 0
@@ -111,6 +125,8 @@ fun calculateEyesSweepAngle(key: EyelidPosition, eyeState: EyeState): Float {
                 EyeState.Ordinary,
                 EyeState.Cry,
                 EyeState.Blink,
+                EyeState.Mute,
+                EyeState.Angry,
                 EyeState.ColdSweat -> 180
 
                 EyeState.OKay,
@@ -129,6 +145,8 @@ fun calculateEyesSweepAngle(key: EyelidPosition, eyeState: EyeState): Float {
                 EyeState.Smile,
                 EyeState.Blink,
                 EyeState.OKay,
+                EyeState.Angry,
+                EyeState.Mute,
                 EyeState.Ordinary -> -180
 
                 EyeState.Cry -> 0
@@ -140,7 +158,9 @@ fun calculateEyesSweepAngle(key: EyelidPosition, eyeState: EyeState): Float {
                 EyeState.Ordinary,
                 EyeState.Cry,
                 EyeState.OKay,
+                EyeState.Mute,
                 EyeState.Blink,
+                EyeState.Angry,
                 EyeState.ColdSweat -> 180
 
                 EyeState.FingerHeart -> 0
@@ -150,4 +170,19 @@ fun calculateEyesSweepAngle(key: EyelidPosition, eyeState: EyeState): Float {
         }
 
     }.toFloat()
+}
+
+
+operator fun Size.minus(other: Size): Size {
+    return Size(
+        width - other.width,
+        height - other.height
+    )
+}
+
+operator fun Size.plus(other: Size): Size {
+    return Size(
+        width + other.width,
+        height + other.height
+    )
 }

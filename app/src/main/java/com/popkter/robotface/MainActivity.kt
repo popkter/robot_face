@@ -7,6 +7,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -24,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import com.popkter.robotface.EyeState.Companion.canBlinkState
 import com.popkter.robotface.ui.theme.RobotFaceTheme
 import kotlinx.coroutines.delay
 
@@ -46,29 +49,35 @@ class MainActivity : ComponentActivity() {
             LaunchedEffect(Unit) {
                 snapshotFlow { eyeState }
                     .collect { state ->
-                        while (eyeState == EyeState.Ordinary || eyeState == EyeState.Blink) {
+                        while (eyeState.canBlinkState()) {
                             delay((100..3000).random().toLong())
-                            if (eyeState != EyeState.Ordinary && eyeState != EyeState.Blink) break
+                            if (!eyeState.canBlinkState()) break
                             eyeState = EyeState.Blink
                             delay(200)
-                            if (eyeState != EyeState.Ordinary && eyeState != EyeState.Blink) break
+                            if (!eyeState.canBlinkState()) break
                             eyeState = EyeState.Ordinary
                         }
                     }
             }
 
             RobotFaceTheme {
-                Column(
+                Row(
                     modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    verticalAlignment = Alignment.Top
                 ) {
                     Box(
+                        modifier = Modifier
+                            .weight(1F)
+                            .fillMaxHeight(),
                         contentAlignment = Alignment.Center
                     ) {
                         RobotFace(eyeState)
                     }
 
-                    LazyVerticalGrid(columns = GridCells.Fixed(2)) {
+                    LazyVerticalGrid(
+                        modifier = Modifier.weight(1F),
+                        columns = GridCells.Fixed(2)
+                    ) {
                         items(items = EyeState.allStates, key = { it.name }) { state ->
                             Log.d("EyeState", "Rendering: ${state.name}")  // 检查是否为 null
                             Button(onClick = {

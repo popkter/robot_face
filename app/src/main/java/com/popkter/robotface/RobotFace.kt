@@ -1,12 +1,15 @@
 package com.popkter.robotface
 
+import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.animateSizeAsState
 import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
@@ -17,12 +20,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
+import androidx.compose.ui.graphics.drawscope.translate
+import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,9 +40,15 @@ sealed class EyeState(val name: String) {
     data object PlayMusic : EyeState("PlayMusic")
     data object ColdSweat : EyeState("ColdSweat")
     data object OKay : EyeState("OKay")
+    data object Mute : EyeState("Mute")
+    data object Angry : EyeState("Angry")
 
     companion object {
-        val allStates by lazy { listOf(Ordinary, Blink, Smile, Cry, FingerHeart, PlayMusic, ColdSweat, OKay) }
+        val allStates by lazy { listOf(Ordinary, Blink, Smile, Cry, FingerHeart, PlayMusic, ColdSweat, OKay, Mute, Angry) }
+
+        fun EyeState.canBlinkState(): Boolean {
+            return this in arrayOf(Ordinary, Blink)
+        }
     }
 }
 
@@ -98,7 +106,6 @@ fun RobotFace(eyeState: EyeState) {
         ).value
     }
 
-
     val infiniteTransition = rememberInfiniteTransition()
 
     val fingerHeartRotate by infiniteTransition.animateFloat(
@@ -128,6 +135,64 @@ fun RobotFace(eyeState: EyeState) {
         )
     )
 
+    val coldSweatTopTranslate by animateFloatAsState(
+        targetValue = when (eyeState) {
+            EyeState.ColdSweat -> 100F
+            else -> 0F
+        },
+        animationSpec = tween(durationMillis = 1200, easing = LinearOutSlowInEasing)
+    )
+
+    val coldSweatLeftTranslate by infiniteTransition.animateFloat(
+        initialValue = 0F,
+        targetValue = 10f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 800, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
+
+    val smileTopTranslate by infiniteTransition.animateFloat(
+        initialValue = 0F,
+        targetValue = 10f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 600, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
+
+    val muteRotate by infiniteTransition.animateFloat(
+        initialValue = -2F,
+        targetValue = 2f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 2000, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
+
+    val angryEyeBrowSweepAngle by animateFloatAsState(
+        targetValue = when (eyeState) {
+            EyeState.Angry -> 30F
+            else -> 0F
+        },
+        animationSpec = tween(durationMillis = 600, easing = FastOutSlowInEasing)
+    )
+
+    val angryMouthSweepAngle by animateFloatAsState(
+        targetValue = when (eyeState) {
+            EyeState.Angry -> 180F
+            else -> 0F
+        },
+        animationSpec = tween(durationMillis = 600, easing = FastOutSlowInEasing)
+    )
+
+    val angryTopTranslate by animateFloatAsState(
+        targetValue = when (eyeState) {
+            EyeState.Angry -> 50F
+            else -> 0F
+        },
+        animationSpec = tween(durationMillis = 600, easing = FastOutSlowInEasing)
+    )
 
     val textMeasurer = rememberTextMeasurer()
     val textOffsetSize by infiniteTransition.animateFloat(
@@ -148,6 +213,8 @@ fun RobotFace(eyeState: EyeState) {
         )
     )
 
+    val graphicsLayer = rememberGraphicsLayer()
+    
     Canvas(modifier = Modifier.size(200.dp)) {
         //Face
         drawOval(
@@ -157,20 +224,16 @@ fun RobotFace(eyeState: EyeState) {
             ), topLeft = Offset(0f, 0f)
         )
 
-        //Eyes
-
-        //Action
+        //Eyes & Action
         when (eyeState) {
             EyeState.FingerHeart -> {
-                rotate(
-                    degrees = eyeDegrees,
-                    pivot = Offset(if (eyeDegrees > 0) center.x + 100 else center.x - 100, center.y)
-                ) {
+
+                rotate(fingerHeartRotate, pivot = Offset(center.x, center.y)) {
                     drawEyes(eyeSpacing, leftEyeSize, rightEyeSize, eyeSweepAngle, eyesOffsetHeight)
                 }
 
                 rotate(fingerHeartRotate, pivot = Offset(center.x, center.y + 800)) {
-                    drawHeart(center.x, center.y)
+                    drawHeart(center)
                 }
             }
 
@@ -180,14 +243,11 @@ fun RobotFace(eyeState: EyeState) {
                 }
 
                 rotate(playMusicRotate, pivot = Offset(center.x, center.y + 400)) {
-                    drawTrebleClef(center.x, center.y, textOffsetSize, textScaleSize, textMeasurer)
+                    drawTrebleClef(center, textOffsetSize, textScaleSize, textMeasurer)
                 }
             }
 
             EyeState.OKay -> {
-//                drawOkay(center.x, center.y)
-//                    drawEyes(eyeSpacing, leftEyeSize, rightEyeSize, eyeSweepAngle, eyesOffsetHeight)
-//
                 rotate(
                     degrees = okayRotate,
                     pivot = Offset(if (eyeDegrees > 0) center.x + 100 else center.x - 100, center.y)
@@ -196,13 +256,41 @@ fun RobotFace(eyeState: EyeState) {
                 }
                 rotate(
                     degrees = playMusicRotate,
-                    pivot = Offset(center.x-100F,center.y+90F)
+                    pivot = Offset(center.x - 100F, center.y + 90F)
                 ) {
-                    drawOkay(center.x, center.y)
+                    drawOkay(center)
+                }
+            }
+
+            EyeState.ColdSweat -> {
+                translate(left = coldSweatLeftTranslate, top = coldSweatTopTranslate) {
+                    drawColdSweat(center)
+                    drawEyes(eyeSpacing, leftEyeSize, rightEyeSize, eyeSweepAngle, eyesOffsetHeight)
+                }
+            }
+
+            EyeState.Mute -> {
+                drawMute(center, size)
+                rotate(degrees = muteRotate, pivot = Offset(center.x, center.y)) {
+                    drawEyes(eyeSpacing, leftEyeSize, rightEyeSize, eyeSweepAngle, eyesOffsetHeight)
+                }
+            }
+
+            EyeState.Smile -> {
+                translate(left = 0F, top = smileTopTranslate) {
+                    drawEyes(eyeSpacing, leftEyeSize, rightEyeSize, eyeSweepAngle, eyesOffsetHeight)
+                }
+            }
+
+            EyeState.Angry -> {
+                translate(left = 0F, top = angryTopTranslate) {
+                    drawAngry(center, size, angryEyeBrowSweepAngle, angryMouthSweepAngle)
+                    drawEyes(eyeSpacing, leftEyeSize, rightEyeSize, eyeSweepAngle, eyesOffsetHeight)
                 }
             }
 
             else -> {
+
                 rotate(
                     degrees = eyeDegrees,
                     pivot = Offset(if (eyeDegrees > 0) center.x + 100 else center.x - 100, center.y)
@@ -223,7 +311,7 @@ fun GreetingPreview() {
 //            RobotFace(EyeState.Ordinary)
             RobotFace(EyeState.OKay)
             RobotFace(EyeState.ColdSweat)
-//            RobotFace(EyeState.PlayMusic)
+            RobotFace(EyeState.Angry)
             RobotFace(EyeState.FingerHeart)
         }
     }
