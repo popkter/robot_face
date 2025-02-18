@@ -23,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -46,6 +47,13 @@ class MainActivity : ComponentActivity() {
 
             var eyeState: EyeState by remember { mutableStateOf(EyeState.Ordinary) }
 
+
+            // 获取屏幕的宽高信息
+            val configuration = LocalConfiguration.current
+            val screenWidth = configuration.screenWidthDp
+            val screenHeight = configuration.screenHeightDp
+            val isLandscape = screenWidth > screenHeight
+
             LaunchedEffect(Unit) {
                 snapshotFlow { eyeState }
                     .collect { state ->
@@ -61,33 +69,65 @@ class MainActivity : ComponentActivity() {
             }
 
             RobotFaceTheme {
-                Row(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalAlignment = Alignment.Top
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .weight(1F)
-                            .fillMaxHeight(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        RobotFace(eyeState)
-                    }
 
-                    LazyVerticalGrid(
-                        modifier = Modifier.weight(1F),
-                        columns = GridCells.Fixed(2)
+                if (isLandscape) {
+                    Row(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalAlignment = Alignment.Top
                     ) {
-                        items(items = EyeState.allStates, key = { it.name }) { state ->
-                            Log.d("EyeState", "Rendering: ${state.name}")  // 检查是否为 null
-                            Button(onClick = {
-                                eyeState = state
-                            }) {
-                                Text(text = state.name)
+                        Box(
+                            modifier = Modifier
+                                .weight(1F)
+                                .fillMaxHeight(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            RobotFace(eyeState)
+                        }
+
+                        LazyVerticalGrid(
+                            modifier = Modifier.weight(1F),
+                            columns = GridCells.Fixed(2)
+                        ) {
+                            items(items = EyeState.allStates, key = { it.name }) { state ->
+                                Log.d("EyeState", "Rendering: ${state.name}")  // 检查是否为 null
+                                Button(onClick = {
+                                    eyeState = state
+                                }) {
+                                    Text(text = state.name)
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .weight(1F)
+                                .fillMaxHeight(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            RobotFace(eyeState)
+                        }
+
+                        LazyVerticalGrid(
+                            modifier = Modifier.weight(1F),
+                            columns = GridCells.Fixed(2)
+                        ) {
+                            items(items = EyeState.allStates, key = { it.name }) { state ->
+                                Log.d("EyeState", "Rendering: ${state.name}")  // 检查是否为 null
+                                Button(onClick = {
+                                    eyeState = state
+                                }) {
+                                    Text(text = state.name)
+                                }
                             }
                         }
                     }
                 }
+
 
             }
         }
