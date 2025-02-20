@@ -1,3 +1,4 @@
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -33,6 +34,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.DpSize
@@ -45,7 +48,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 @Preview
-fun App() {
+fun App(isLandScape: Boolean = false) {
 
     var eyeState: EyeState by remember { mutableStateOf(EyeState.Ordinary) }
 
@@ -66,7 +69,7 @@ fun App() {
 
     MaterialTheme {
 
-        if (isLandscape()) {
+        if (isLandScape) {
             Row(
                 modifier = Modifier.fillMaxSize(),
                 verticalAlignment = Alignment.Top
@@ -88,11 +91,22 @@ fun App() {
                     ) {
                         items(items = EyeState.allStates, key = { it.name }) { state ->
                             Surface(
-                                modifier = Modifier.padding(10.dp).clip(RoundedCornerShape(5.dp))
-                                    .background(Color.Blue.copy(.5F))
-                                    .clickable { eyeState = state }
+                                modifier = Modifier
+                                    .padding(5.dp)
+                                    .height(40.dp)
+                                    .border(
+                                        width = 1.dp, brush = Brush.verticalGradient(
+                                            colors = listOf(Color.Red, Color.White, Color.Gray)
+                                        ), shape = RoundedCornerShape(5.dp)
+                                    )
+                                    .clip(RoundedCornerShape(5.dp))
+                                    .clickable { eyeState = state },
+                                color = Color.Gray.copy(alpha = 0.1F),
+//                                contentColor = Color.White.copy(alpha = 0.5F)
                             ) {
-                                Text(text = state.name)
+                                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                                    Text(text = state.name)
+                                }
                             }
                         }
                     }
@@ -149,19 +163,4 @@ fun App() {
     }
 }
 
-@Composable
-fun getScreenSizeDp(): DpSize {
-    val density = LocalDensity.current
-    val windowSize = WindowInsets.systemBars // 获取系统窗口信息
-    val layoutDirection = LocalLayoutDirection.current
-    return DpSize(
-        (windowSize.getLeft(density, layoutDirection) + windowSize.getRight(density, layoutDirection)).dp,
-        (windowSize.getTop(density) + windowSize.getBottom(density)).dp
-    )
-}
 
-@Composable
-fun isLandscape(): Boolean {
-    val screenSize = getScreenSizeDp()
-    return screenSize.width > screenSize.height
-}

@@ -9,6 +9,6 @@ fun main() = application {
         onCloseRequest = ::exitApplication,
         title = "RobotFace_KMP",
     ) {
-        App()
+        AppV2()
     }
 }
