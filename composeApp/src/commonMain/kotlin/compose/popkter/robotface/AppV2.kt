@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.popkter.robotface.ui.view.singleEye
+import compose.popkter.robotface.ui.drawEye
 import kotlin.math.max
 
 @Composable
@@ -118,9 +119,21 @@ fun AppV2(isLandScape: Boolean = false) {
                 .padding(bottom = 250.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            EyeOffset(modifier = Modifier.weight(1F), "左眼水平偏移", leftEyeHorizontalTransition) { leftEyeHorizontalTransition = it }
-            EyeOffset(modifier = Modifier.weight(1F), "水平偏移", bothEyesHorizontalTransition) { bothEyesHorizontalTransition = it }
-            EyeOffset(modifier = Modifier.weight(1F), "右眼水平偏移", rightEyeHorizontalTransition) { rightEyeHorizontalTransition = it }
+            EyeOffset(
+                modifier = Modifier.weight(1F),
+                "左眼水平偏移",
+                leftEyeHorizontalTransition
+            ) { leftEyeHorizontalTransition = it }
+            EyeOffset(
+                modifier = Modifier.weight(1F),
+                "水平偏移",
+                bothEyesHorizontalTransition
+            ) { bothEyesHorizontalTransition = it }
+            EyeOffset(
+                modifier = Modifier.weight(1F),
+                "右眼水平偏移",
+                rightEyeHorizontalTransition
+            ) { rightEyeHorizontalTransition = it }
         }
 
 
@@ -131,9 +144,19 @@ fun AppV2(isLandScape: Boolean = false) {
                 .padding(bottom = 200.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            EyeOffset(modifier = Modifier.weight(1F), "左眼垂直偏移", leftEyeVerticalTransition) { leftEyeVerticalTransition = it }
-            EyeOffset(modifier = Modifier.weight(1F), "垂直偏移", bothEyesVerticalTransition) { bothEyesVerticalTransition = it }
-            EyeOffset(modifier = Modifier.weight(1F), "右眼垂直偏移", rightEyeVerticalTransition) { rightEyeVerticalTransition = it }
+            EyeOffset(
+                modifier = Modifier.weight(1F),
+                "左眼垂直偏移",
+                leftEyeVerticalTransition
+            ) { leftEyeVerticalTransition = it }
+            EyeOffset(modifier = Modifier.weight(1F), "垂直偏移", bothEyesVerticalTransition) {
+                bothEyesVerticalTransition = it
+            }
+            EyeOffset(
+                modifier = Modifier.weight(1F),
+                "右眼垂直偏移",
+                rightEyeVerticalTransition
+            ) { rightEyeVerticalTransition = it }
         }
 
         Row(
@@ -150,30 +173,27 @@ fun AppV2(isLandScape: Boolean = false) {
 
         Row(
             Modifier
+                .padding(top = 180.dp)
                 .size(200.dp, 200.dp)
                 .clip(RoundedCornerShape(100.dp))
                 .background(Color.Black)
-                .align(Alignment.Center),
+                .align(Alignment.TopCenter),
         ) {
 
             Canvas(modifier = Modifier.fillMaxSize()) {
 
                 translate(left = bothEyesHorizontalTransition, top = bothEyesVerticalTransition) {
                     rotate(degrees = bothEyesRotatedAngle, pivot = eyesCenterOffset) {
-                        singleEye(
-                            eyesWidth = eyesWidth,
-                            upperEyelidHeight = leftTopSliderIndex,
-                            lowerEyelidHeight = leftBottomSliderIndex,
-                            rotatedAngle = leftEyeRotatedAngle,
-                            leftTranslation = leftEyeHorizontalTransition,
-                            topTranslation = leftEyeVerticalTransition,
-                            th = max(0F, leftTopSliderIndex / 3 - leftTopSliderIndex / 3 * (1 - leftTopRadius)),
-                            tlw = eyesLine - eyesLine * (1 - leftTopRadius),
-                            trw = eyesLine - eyesLine * (1 - leftTopRadius),
-                            bh = max(0F, leftBottomSliderIndex / 3 - leftBottomSliderIndex / 3 * (1 - leftBottomRadius)),
-                            blw = eyesLine - eyesLine * (1 - leftBottomRadius),
-                            btw = eyesLine - eyesLine * (1 - leftBottomRadius),
-                            center = leftEyeOffset
+                        drawEye(
+                            center = leftEyeOffset,
+                            width = eyesWidth / 2,
+                            upperEyelidRadius = leftTopSliderIndex / 2,
+                            lowerEyelidRadius = leftBottomSliderIndex / 2,
+                            topRadius = leftTopRadius,
+                            bottomRadius = leftBottomRadius,
+                            horizontalTranslation = leftEyeHorizontalTransition,
+                            verticalTranslation = leftEyeVerticalTransition,
+                            rotateAngle = leftEyeRotatedAngle
                         )
 
                         singleEye(
@@ -232,7 +252,7 @@ fun EyeHeightWithRadius(
             onValueChange = {
                 onRadiusChanged(it)
             },
-            valueRange = 0F..1F,
+            valueRange = 0F..72F,
             steps = 9,
             modifier = Modifier
                 .fillMaxWidth()
