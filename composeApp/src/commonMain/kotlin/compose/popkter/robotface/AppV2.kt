@@ -31,19 +31,18 @@ import androidx.compose.ui.unit.dp
 import com.popkter.robotface.ui.view.singleEye
 import compose.popkter.robotface.ui.drawEye
 import kotlin.math.max
+import kotlin.math.min
 
 @Composable
 fun AppV2(isLandScape: Boolean = false) {
-    var leftTopSliderIndex by remember { mutableFloatStateOf(200F) }
-    var leftBottomSliderIndex by remember { mutableFloatStateOf(200F) }
+    var leftTopSliderIndex by remember { mutableFloatStateOf(150F) }
+    var leftBottomSliderIndex by remember { mutableFloatStateOf(150F) }
 
-    var rightTopSliderIndex by remember { mutableFloatStateOf(200F) }
-    var rightBottomSliderIndex by remember { mutableFloatStateOf(200F) }
+    var rightTopSliderIndex by remember { mutableFloatStateOf(150F) }
+    var rightBottomSliderIndex by remember { mutableFloatStateOf(150F) }
 
-    var leftTopRadius by remember { mutableFloatStateOf(0F) }
-    var leftBottomRadius by remember { mutableFloatStateOf(0F) }
-    var rightTopRadius by remember { mutableFloatStateOf(0F) }
-    var rightBottomRadius by remember { mutableFloatStateOf(0F) }
+    var leftEyeCornerRadius by remember { mutableFloatStateOf(30F) }
+    var rightEyeCornerRadius by remember { mutableFloatStateOf(30F) }
 
     var leftEyeRotatedAngle by remember { mutableFloatStateOf(0F) }
     var rightEyeRotatedAngle by remember { mutableFloatStateOf(0F) }
@@ -64,7 +63,6 @@ fun AppV2(isLandScape: Boolean = false) {
     val rightEyeOffset = Offset(faceWidth * 2 / 3, faceWidth * 2 / 5)
     val eyesCenterOffset = Offset(faceWidth / 2, faceWidth * 2 / 5)
     val eyesWidth = faceWidth / 3F
-    val eyesLine = eyesWidth / 6F
 
     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.TopStart) {
 
@@ -76,19 +74,20 @@ fun AppV2(isLandScape: Boolean = false) {
         ) {
 
             EyeHeightWithRadius(
-                Modifier.weight(1F).padding(10.dp),
-                leftTopSliderIndex,
-                { leftTopSliderIndex = it },
-                leftTopRadius,
-                { leftTopRadius = it })
+                modifier = Modifier.weight(1F).padding(10.dp),
+                sliderIndex = leftTopSliderIndex,
+                onSliderChanged = { leftTopSliderIndex = it },
+                radius = leftEyeCornerRadius,
+                range = 0F..(eyesWidth / 5F),
+                onRadiusChanged = { leftEyeCornerRadius = it })
 
             EyeHeightWithRadius(
-                Modifier.weight(1F).padding(10.dp),
-                rightTopSliderIndex,
-                { rightTopSliderIndex = it },
-                rightTopRadius,
-                { rightTopRadius = it })
-
+                modifier = Modifier.weight(1F).padding(10.dp),
+                sliderIndex = rightTopSliderIndex,
+                onSliderChanged = { rightTopSliderIndex = it },
+                radius = leftEyeCornerRadius,
+                range = 0F..(eyesWidth / 5F),
+                onRadiusChanged = { leftEyeCornerRadius = it })
         }
 
         Row(
@@ -98,18 +97,20 @@ fun AppV2(isLandScape: Boolean = false) {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             EyeHeightWithRadius(
-                Modifier.weight(1F).padding(10.dp),
-                leftBottomSliderIndex,
-                { leftBottomSliderIndex = it },
-                leftBottomRadius,
-                { leftBottomRadius = it })
+                modifier = Modifier.weight(1F).padding(10.dp),
+                sliderIndex = leftBottomSliderIndex,
+                onSliderChanged = { leftBottomSliderIndex = it },
+                radius = rightEyeCornerRadius,
+                range = 0F..(eyesWidth / 5F),
+                onRadiusChanged = { rightEyeCornerRadius = it })
 
             EyeHeightWithRadius(
-                Modifier.weight(1F).padding(10.dp),
-                rightBottomSliderIndex,
-                { rightBottomSliderIndex = it },
-                rightBottomRadius,
-                { rightBottomRadius = it })
+                modifier = Modifier.weight(1F).padding(10.dp),
+                sliderIndex = rightBottomSliderIndex,
+                onSliderChanged = { rightBottomSliderIndex = it },
+                radius = rightEyeCornerRadius,
+                range = 0F..(eyesWidth / 5F),
+                onRadiusChanged = { rightEyeCornerRadius = it })
         }
 
         Row(
@@ -186,30 +187,24 @@ fun AppV2(isLandScape: Boolean = false) {
                     rotate(degrees = bothEyesRotatedAngle, pivot = eyesCenterOffset) {
                         drawEye(
                             center = leftEyeOffset,
-                            width = eyesWidth / 2,
+                            horizontalRadius = eyesWidth / 5,
                             upperEyelidRadius = leftTopSliderIndex / 2,
                             lowerEyelidRadius = leftBottomSliderIndex / 2,
-                            topRadius = leftTopRadius,
-                            bottomRadius = leftBottomRadius,
+                            cornerRadius = leftEyeCornerRadius,
                             horizontalTranslation = leftEyeHorizontalTransition,
                             verticalTranslation = leftEyeVerticalTransition,
                             rotateAngle = leftEyeRotatedAngle
                         )
 
-                        singleEye(
-                            eyesWidth = eyesWidth,
-                            upperEyelidHeight = rightTopSliderIndex,
-                            lowerEyelidHeight = rightBottomSliderIndex,
-                            rotatedAngle = rightEyeRotatedAngle,
-                            leftTranslation = rightEyeHorizontalTransition,
-                            topTranslation = rightEyeVerticalTransition,
-                            th = max(0F, rightTopSliderIndex / 3 - rightTopSliderIndex / 3 * (1 - rightTopRadius)),
-                            tlw = eyesLine - eyesLine * (1 - rightTopRadius),
-                            trw = eyesLine - eyesLine * (1 - rightTopRadius),
-                            bh = max(0F, rightBottomSliderIndex / 3 - rightBottomSliderIndex / 3 * (1 - rightBottomRadius)),
-                            blw = eyesLine - eyesLine * (1 - rightBottomRadius),
-                            btw = eyesLine - eyesLine * (1 - rightBottomRadius),
-                            center = rightEyeOffset
+                        drawEye(
+                            center = rightEyeOffset,
+                            horizontalRadius = eyesWidth / 5,
+                            upperEyelidRadius = rightTopSliderIndex / 2,
+                            lowerEyelidRadius = rightBottomSliderIndex / 2,
+                            cornerRadius = rightEyeCornerRadius,
+                            horizontalTranslation = rightEyeHorizontalTransition,
+                            verticalTranslation = rightEyeVerticalTransition,
+                            rotateAngle = rightEyeRotatedAngle
                         )
                     }
                 }
@@ -224,9 +219,10 @@ fun AppV2(isLandScape: Boolean = false) {
 fun EyeHeightWithRadius(
     modifier: Modifier,
     sliderIndex: Float,
-    onSliderChanged: (Float) -> Unit,
+    range: ClosedFloatingPointRange<Float> = 0F..90F,
     radius: Float,
-    onRadiusChanged: (Float) -> Unit
+    onSliderChanged: (Float) -> Unit,
+    onRadiusChanged: (Float) -> Unit,
 ) {
 
     Column(
@@ -240,7 +236,7 @@ fun EyeHeightWithRadius(
             onValueChange = {
                 onSliderChanged(it)
             },
-            valueRange = 0F..200F,
+            valueRange = 0F..150F,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(10.dp)
@@ -252,8 +248,8 @@ fun EyeHeightWithRadius(
             onValueChange = {
                 onRadiusChanged(it)
             },
-            valueRange = 0F..72F,
-            steps = 9,
+            valueRange = range,
+            steps = 7,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(10.dp)
