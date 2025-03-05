@@ -96,8 +96,8 @@ fun RobotFace(eyeState: EyeState) {
         animationSpec = tween(durationMillis = 300), label = ""
     )
 
-    val eyeSweepAngle = EyelidPosition.allPosition.associate { key ->
-        key to animateFloatAsState(
+    val eyeSweepAngle = EyelidPosition.allPosition.associateWith { key ->
+        animateFloatAsState(
             targetValue = calculateEyesSweepAngle(key, eyeState),
             animationSpec = tween(durationMillis = 300),
             label = ""

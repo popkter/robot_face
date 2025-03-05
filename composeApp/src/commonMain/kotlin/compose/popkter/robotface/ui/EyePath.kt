@@ -2,20 +2,19 @@ package compose.popkter.robotface.ui
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.graphics.drawscope.translate
-import kotlin.math.max
-import kotlin.math.min
+import kotlin.math.abs
 
 
 /**
  * [center] Center Pivot
- * [width] EyeTotalWidth
+ * [horizontalRadius] horizontalRadius
  * [upperEyelidRadius] UpperEyelidHeight
  * [lowerEyelidRadius]LowerEyelidHeight
  */
@@ -27,13 +26,14 @@ fun DrawScope.drawEye(
     cornerRadius: Float = 0F,
     rotateAngle: Float = 0F,
     horizontalTranslation: Float = 0F,
-    verticalTranslation: Float = 0F
+    verticalTranslation: Float = 0F,
+    fillColor: Color = Color.Transparent
 ) {
 
     val (x, y) = center
 
-    val upperCornerRadius = max(0F, listOf(upperEyelidRadius, cornerRadius, horizontalRadius).min())
-    val lowerCornerRadius = max(0F, listOf(lowerEyelidRadius, cornerRadius, horizontalRadius).min())
+    val upperCornerRadius = listOf(abs(upperEyelidRadius), abs(cornerRadius), abs(horizontalRadius)).min()
+    val lowerCornerRadius = listOf(abs(lowerEyelidRadius), abs(cornerRadius), abs(horizontalRadius)).min()
 
 
     val path = Path().apply {
@@ -91,6 +91,14 @@ fun DrawScope.drawEye(
 
     translate(left = horizontalTranslation, top = verticalTranslation) {
         rotate(degrees = rotateAngle, pivot = center) {
+            if (fillColor != Color.Transparent) {
+                drawPath(
+                    path = path,
+                    color = fillColor,
+                    style = Fill
+                )
+            }
+
             drawPath(
                 path = path,
                 color = Color.White,
