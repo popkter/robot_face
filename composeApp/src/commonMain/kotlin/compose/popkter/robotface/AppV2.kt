@@ -1,6 +1,8 @@
 package compose.popkter.robotface
 
+import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.rememberTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -22,10 +24,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,7 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import compose.popkter.robotface.status.Blink
-import compose.popkter.robotface.status.Coldness
+import compose.popkter.robotface.status.Music
 import compose.popkter.robotface.status.Ordinary
 import compose.popkter.robotface.status.RobotStatus
 import compose.popkter.robotface.status.RobotStatus.Companion.canBlinkState
@@ -47,22 +46,22 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun AppV2(isLandScape: Boolean = false) {
-    var eyeState: RobotStatus by remember { mutableStateOf(Coldness) }
 
-    val textMeasurer = rememberTextMeasurer()
 
-    val infiniteTransition = rememberInfiniteTransition()
+    val eyeTransitionState = remember {
+        MutableTransitionState<RobotStatus>(Music)
+    }
 
     LaunchedEffect(Unit) {
-        snapshotFlow { eyeState }
+        snapshotFlow { eyeTransitionState.targetState }
             .collect {
-                while (eyeState.canBlinkState()) {
+                while (eyeTransitionState.targetState.canBlinkState()) {
                     delay((200..3000).random().toLong())
-                    if (!eyeState.canBlinkState()) break
-                    eyeState = Blink
+                    if (!eyeTransitionState.targetState.canBlinkState()) break
+                    eyeTransitionState.targetState = Blink
                     delay(220)
-                    if (!eyeState.canBlinkState()) break
-                    eyeState = Ordinary
+                    if (!eyeTransitionState.targetState.canBlinkState()) break
+                    eyeTransitionState.targetState = Ordinary
                 }
             }
     }
@@ -71,6 +70,10 @@ fun AppV2(isLandScape: Boolean = false) {
         colors = listOf(Color.Blue, Color.Red, Color.White, Color.Blue),
         center = Offset(x = 20F, y = 20F)
     )
+
+    val finiteTransition = rememberTransition(transitionState = eyeTransitionState, label = "finiteTransition")
+    val infiniteTransition = rememberInfiniteTransition("infiniteTransition")
+    val textMeasurer = rememberTextMeasurer()
 
     if (isLandScape) {
         Row {
@@ -86,19 +89,20 @@ fun AppV2(isLandScape: Boolean = false) {
                             brush = faceFillColor
                         )
                 ) {
+                    with(eyeTransitionState.targetState) {
+                        drawEyes(
+                            modifier = Modifier.matchParentSize(),
+                            finiteTransition = finiteTransition,
+                            infiniteTransition = infiniteTransition
+                        )
 
-                    drawEyes(
-                        modifier = Modifier.matchParentSize(),
-                        status = eyeState,
-                        infiniteTransition = infiniteTransition
-                    )
-
-                    drawAction(
-                        modifier = Modifier.matchParentSize(),
-                        status = eyeState,
-                        textMeasurer = textMeasurer,
-                        infiniteTransition = infiniteTransition
-                    )
+                        drawAction(
+                            modifier = Modifier.matchParentSize(),
+                            finiteTransition = finiteTransition,
+                            infiniteTransition = infiniteTransition,
+                            textMeasurer = textMeasurer
+                        )
+                    }
                 }
             }
 
@@ -112,7 +116,7 @@ fun AppV2(isLandScape: Boolean = false) {
                     contentPadding = PaddingValues(5.dp)
                 ) {
                     items(items = RobotStatus.allStates, key = { it.toString() }) { state ->
-                        if (eyeState == state) {
+                        if (eyeTransitionState.targetState == state) {
                             Surface(
                                 modifier = Modifier
                                     .padding(5.dp)
@@ -123,7 +127,7 @@ fun AppV2(isLandScape: Boolean = false) {
                                         ), shape = RoundedCornerShape(5.dp)
                                     )
                                     .clip(RoundedCornerShape(5.dp))
-                                    .clickable { eyeState = state },
+                                    .clickable { eyeTransitionState.targetState = state },
                                 color = Color.Cyan.copy(alpha = 0.3F),
                             ) {
                                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -141,7 +145,7 @@ fun AppV2(isLandScape: Boolean = false) {
                                         ), shape = RoundedCornerShape(5.dp)
                                     )
                                     .clip(RoundedCornerShape(5.dp))
-                                    .clickable { eyeState = state },
+                                    .clickable { eyeTransitionState.targetState = state },
                                 color = Color.Gray.copy(alpha = 0.1F),
                             ) {
                                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -173,19 +177,21 @@ fun AppV2(isLandScape: Boolean = false) {
                         )
                 ) {
 
-                    drawEyes(
-                        modifier = Modifier.matchParentSize(),
-                        status = eyeState,
-                        infiniteTransition = infiniteTransition
-                    )
+                    with(eyeTransitionState.targetState) {
+                        drawEyes(
+                            modifier = Modifier.matchParentSize(),
+                            finiteTransition = finiteTransition,
+                            infiniteTransition = infiniteTransition
+                        )
 
+                        drawAction(
+                            modifier = Modifier.matchParentSize(),
+                            finiteTransition = finiteTransition,
+                            infiniteTransition = infiniteTransition,
+                            textMeasurer = textMeasurer
+                        )
+                    }
 
-                    drawAction(
-                        modifier = Modifier.matchParentSize(),
-                        status = eyeState,
-                        textMeasurer = textMeasurer,
-                        infiniteTransition = infiniteTransition
-                    )
                 }
             }
 
@@ -200,7 +206,7 @@ fun AppV2(isLandScape: Boolean = false) {
                     contentPadding = PaddingValues(5.dp)
                 ) {
                     items(items = RobotStatus.allStates, key = { it.toString() }) { state ->
-                        if (eyeState == state) {
+                        if (eyeTransitionState.targetState == state) {
                             Surface(
                                 modifier = Modifier
                                     .padding(5.dp)
@@ -211,7 +217,7 @@ fun AppV2(isLandScape: Boolean = false) {
                                         ), shape = RoundedCornerShape(5.dp)
                                     )
                                     .clip(RoundedCornerShape(5.dp))
-                                    .clickable { eyeState = state },
+                                    .clickable { eyeTransitionState.targetState = state },
                                 color = Color.Cyan.copy(alpha = 0.3F),
                             ) {
                                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -229,7 +235,7 @@ fun AppV2(isLandScape: Boolean = false) {
                                         ), shape = RoundedCornerShape(5.dp)
                                     )
                                     .clip(RoundedCornerShape(5.dp))
-                                    .clickable { eyeState = state },
+                                    .clickable { eyeTransitionState.targetState = state },
                                 color = Color.Gray.copy(alpha = 0.1F),
                             ) {
                                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {

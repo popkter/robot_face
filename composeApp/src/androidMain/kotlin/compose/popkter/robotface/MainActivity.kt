@@ -1,6 +1,5 @@
 package compose.popkter.robotface
 
-import App
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
