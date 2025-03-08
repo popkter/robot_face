@@ -8,6 +8,8 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.tween
 import androidx.compose.ui.graphics.Color
 import compose.popkter.robotface.ext.PivotLevel
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 
 sealed class RobotStatus(
 
@@ -119,23 +121,22 @@ data class EyeHorizontalRadius(
     override var targetValue: Float = 30F
 ) : BaseTransitionProperty()
 
-data class EyeVerticalRadius(val label: String = "EyeVerticalRadius") : ITransitionProperty by BaseTransitionProperty(
-    initialValue = 60F,
-    targetValue = 60F,
-    duration = 240,
-    infinite = false
-)
+data class EyeVerticalRadius(
+    override var initialValue: Float = 60F,
+    override var targetValue: Float = 60F,
+    override var duration: Int = 240
+) : BaseTransitionProperty()
 
 
 interface ITransitionProperty {
-    var initialValue: Float
-    var targetValue: Float
-    var duration: Int
-    var infinite: Boolean
-    var repeatMode: RepeatMode
-    var easing: Easing
-    var animationSpec: AnimationSpec<Float>
-    var centerPivotLevel: PivotLevel
+    val initialValue: Float
+    val targetValue: Float
+    val duration: Int
+    val infinite: Boolean
+    val repeatMode: RepeatMode
+    val easing: Easing
+    val animationSpec: AnimationSpec<Float>
+    val centerPivotLevel: PivotLevel
 }
 
 open class BaseTransitionProperty(
@@ -162,4 +163,30 @@ open class BaseTransitionProperty(
                 easing = easing
             )
         }
-) : ITransitionProperty
+) : ITransitionProperty {
+
+    fun <T : BaseTransitionProperty> init(block: BaseTransitionProperty.() -> Unit): T {
+        return this.apply {
+            block()
+            updateAnimation()
+        } as T
+    }
+
+    private fun updateAnimation() {
+        animationSpec = if (infinite) {
+            infiniteRepeatable(
+                animation =
+                tween(
+                    durationMillis = duration,
+                    easing = easing
+                ),
+                repeatMode = repeatMode
+            )
+        } else {
+            tween(
+                durationMillis = duration,
+                easing = easing
+            )
+        }
+    }
+}
