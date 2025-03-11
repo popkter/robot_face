@@ -19,8 +19,6 @@ fun isLandscape(): Boolean {
     return configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 }
 
-actual fun isLandScape(): Boolean = true
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
