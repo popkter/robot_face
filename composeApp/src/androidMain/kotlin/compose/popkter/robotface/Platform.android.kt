@@ -1,5 +1,7 @@
 package compose.popkter.robotface
 
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.os.Build
 
 class AndroidPlatform : Platform {
@@ -7,3 +9,5 @@ class AndroidPlatform : Platform {
 }
 
 actual fun getPlatform(): Platform = AndroidPlatform()
+
+actual fun isLandScape(): Boolean = Resources.getSystem().configuration.orientation == Configuration.ORIENTATION_LANDSCAPE

@@ -1,6 +1,5 @@
 package compose.popkter.robotface
 
-import App
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 
@@ -9,6 +8,6 @@ fun main() = application {
         onCloseRequest = ::exitApplication,
         title = "RobotFace_KMP",
     ) {
-        AppV2()
+        App()
     }
 }

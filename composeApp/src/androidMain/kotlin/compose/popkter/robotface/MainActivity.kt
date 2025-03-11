@@ -19,6 +19,7 @@ fun isLandscape(): Boolean {
     return configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 }
 
+actual fun isLandScape(): Boolean = true
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +34,7 @@ class MainActivity : ComponentActivity() {
 
 
         setContent {
-            AppV2(isLandscape())
+            App(isLandscape())
         }
     }
 }
@@ -42,6 +43,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AppAndroidPreview() {
     MaterialTheme {
-        AppV2(isLandscape())
+        App(isLandscape())
     }
 }
