@@ -75,7 +75,8 @@ sealed class RobotStatus(
                 Coffee,
                 Singing,
                 Dialogue,
-                Football
+                Football,
+                SunGlasses
             )
         }
 

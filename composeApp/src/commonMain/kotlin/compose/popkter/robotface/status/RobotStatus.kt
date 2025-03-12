@@ -21,6 +21,7 @@ import compose.popkter.robotface.ext.PivotLevel
 import compose.popkter.robotface.ext.RAIN_SAMPLE
 import compose.popkter.robotface.ext.SPARK_SAMPLE
 import compose.popkter.robotface.ext.SPEECHLESS_SAMPLE
+import compose.popkter.robotface.ext.SUNGLASS_SAMPLE
 import compose.popkter.robotface.ext.SUN_SAMPLE
 
 
@@ -762,4 +763,33 @@ data object Football : RobotStatus(
 
     actionVerticalTransition = ActionTransition(initialValue = 80F, targetValue = 80F),
 
+)
+
+
+data object SunGlasses : RobotStatus(
+
+    leftTopEyeRadius = EyeVerticalRadius().init { targetValue = 40F },
+    leftBottomEyeRadius = EyeVerticalRadius().init { targetValue = 0F },
+    rightTopEyeRadius = EyeVerticalRadius().init { targetValue = 40F },
+    rightBottomEyeRadius = EyeVerticalRadius().init { targetValue = 0F },
+
+    verticalTransition = EyesTransition(initialValue = 40F).init {
+        initialValue = 0F
+        targetValue = 10F
+        duration = 400
+        infinite = true
+        repeatMode = RepeatMode.Reverse
+    },
+
+    actionSample = ActionSample(SUNGLASS_SAMPLE),
+
+    actionVerticalTransition = ActionTransition(initialValue = 40F).init {
+        initialValue = -20F
+        targetValue = -30F
+        duration = 400
+        infinite = true
+        repeatMode = RepeatMode.Reverse
+    },
+
+    actionScale =  ActionScale(initialValue = 1F, targetValue = 2.8F)
 )

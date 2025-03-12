@@ -25,6 +25,7 @@ const val MUSIC_SAMPLE = "🎹"
 const val DIALOGUE_SAMPLE = "✆"
 const val SPARK_SAMPLE = "✨"
 const val FOOTBALL_SAMPLE = "⚽"
+const val SUNGLASS_SAMPLE = "\uD83D\uDD76"
 
 const val PIVOT_OFFSET = 0.707F
 
