@@ -17,12 +17,13 @@ const val PENCIL_SAMPLE = "✎"
 const val MIC_SAMPLE = "\uD83C\uDF99"
 const val SPEECHLESS_SAMPLE = "ⲽ"
 const val NOTE_SAMPLE = "\uD83D\uDCD1"
-const val CLOUD_SAMPLE = "ᴥ"
+const val CLOUD_SAMPLE = "☁"
 const val SUN_SAMPLE = "☀"
 const val RAIN_SAMPLE = "☔"
 const val COFFEE_SAMPLE = "☕"
 const val MUSIC_SAMPLE = "🎹"
-const val EMAIL_SAMPLE = "✉"
+const val EMAIL_SAMPLE = "✆"
+const val SPARK_SAMPLE = "✨"
 
 const val PIVOT_OFFSET = 0.707F
 

@@ -8,8 +8,6 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.tween
 import androidx.compose.ui.graphics.Color
 import compose.popkter.robotface.ext.PivotLevel
-import kotlin.contracts.InvocationKind
-import kotlin.contracts.contract
 
 sealed class RobotStatus(
 
@@ -47,6 +45,7 @@ sealed class RobotStatus(
 
     val actionSample: ActionSample = ActionSample(),
     val actionRotate: ActionRotate = ActionRotate(),
+    val actionScale: ActionScale = ActionScale(),
     val actionScaleX: ActionScale = ActionScale(),
     val actionScaleY: ActionScale = ActionScale(),
     val actionHorizontalTransition: ActionTransition = ActionTransition(),
@@ -68,7 +67,14 @@ sealed class RobotStatus(
                 Okay,
                 Talk,
                 Think,
-                Record
+                Record,
+                Rainy,
+                Cloudy,
+                Sunny,
+                SparkLight,
+                Coffee,
+                Singing,
+                Dialogue,
             )
         }
 

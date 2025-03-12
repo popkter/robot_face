@@ -23,7 +23,6 @@ import compose.popkter.robotface.ext.generateTransition
 import compose.popkter.robotface.status.RobotStatus
 
 
-
 @Composable
 fun RobotStatus.drawAction(
     modifier: Modifier,
@@ -33,6 +32,7 @@ fun RobotStatus.drawAction(
 ) {
     if (actionSample.sample.isEmpty()) return
     val rotate by actionRotate.generateTransition(finiteTransition, infiniteTransition)
+    val scale by actionScale.generateTransition(finiteTransition, infiniteTransition)
     val scaleX by actionScaleX.generateTransition(finiteTransition, infiniteTransition)
     val scaleY by actionScaleY.generateTransition(finiteTransition, infiniteTransition)
     val horizontalTransition by actionHorizontalTransition.generateTransition(finiteTransition, infiniteTransition)
@@ -42,10 +42,10 @@ fun RobotStatus.drawAction(
         modifier = modifier
     ) {
         val textStyle = TextStyle(
-            fontSize = 40.sp,
+            fontSize = 40.sp * scale,
             color = Color.White,
             fontFamily = FontFamily.Default,
-            fontWeight = FontWeight.ExtraBold
+            fontWeight = FontWeight.ExtraBold,
         )
 
         val textLayoutResult = textMeasurer.measure(
@@ -58,18 +58,19 @@ fun RobotStatus.drawAction(
                 degrees = rotate,
                 pivot = actionRotate.centerPivotLevel.calculateRotateCenterPivot(center, size.width / 2)
             ) {
-                scale(scaleX = scaleX, scaleY = scaleY, pivot = center) {
+                scale(scaleX, scaleY) {
                     drawText(
                         textLayoutResult = textLayoutResult,
                         topLeft = Offset(
-                            center.x - textLayoutResult.size.width / 2,
-                            center.y + textLayoutResult.size.height / 2
+                            center.x - (textLayoutResult.size.width) / 2,
+                            center.y - (textLayoutResult.size.height) / 2
                         ),
                         drawStyle = Stroke(width = 3F)
                     )
                 }
             }
         }
+
 
     }
 }
