@@ -2,6 +2,7 @@ package compose.popkter.robotface.status
 
 import androidx.compose.animation.core.EaseIn
 import androidx.compose.animation.core.EaseInCubic
+import androidx.compose.animation.core.EaseInOutCubic
 import androidx.compose.animation.core.EaseOutExpo
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -10,7 +11,8 @@ import androidx.compose.animation.core.keyframes
 import androidx.compose.ui.graphics.Color
 import compose.popkter.robotface.ext.CLOUD_SAMPLE
 import compose.popkter.robotface.ext.COFFEE_SAMPLE
-import compose.popkter.robotface.ext.EMAIL_SAMPLE
+import compose.popkter.robotface.ext.DIALOGUE_SAMPLE
+import compose.popkter.robotface.ext.FOOTBALL_SAMPLE
 import compose.popkter.robotface.ext.HEART_SAMPLE
 import compose.popkter.robotface.ext.MIC_SAMPLE
 import compose.popkter.robotface.ext.MUSIC_SAMPLE
@@ -30,7 +32,8 @@ data object Blink : RobotStatus(
     leftTopEyeRadius = EyeVerticalRadius().init { targetValue = 1F },
     leftBottomEyeRadius = EyeVerticalRadius().init { targetValue = 1F },
     rightTopEyeRadius = EyeVerticalRadius().init { targetValue = 1F },
-    rightBottomEyeRadius = EyeVerticalRadius().init { targetValue = 1F })
+    rightBottomEyeRadius = EyeVerticalRadius().init { targetValue = 1F }
+)
 
 //伤心
 data object Sadness : RobotStatus(
@@ -688,7 +691,7 @@ data object Dialogue : RobotStatus(
         )
     },
 
-    actionSample = ActionSample(EMAIL_SAMPLE),
+    actionSample = ActionSample(DIALOGUE_SAMPLE),
 
     actionHorizontalTransition = ActionTransition(
         initialValue = 0F,
@@ -725,4 +728,38 @@ data object Dialogue : RobotStatus(
     },
 
     actionVerticalTransition = ActionTransition(initialValue = 100F, targetValue = 100F)
+)
+
+
+data object Football : RobotStatus(
+
+
+    leftTopEyeRadius = EyeVerticalRadius().init { targetValue = 40F },
+    leftBottomEyeRadius = EyeVerticalRadius().init { targetValue = 0F },
+    rightTopEyeRadius = EyeVerticalRadius().init { targetValue = 40F },
+    rightBottomEyeRadius = EyeVerticalRadius().init { targetValue = 0F },
+
+    verticalTransition = EyesTransition(initialValue = 40F).init {
+        initialValue = 0F
+        targetValue = 10F
+        duration = 400
+        infinite = true
+        repeatMode = RepeatMode.Reverse
+    },
+
+
+    actionSample = ActionSample(FOOTBALL_SAMPLE),
+
+    actionRotate = ActionRotate().init {
+        centerPivotLevel = PivotLevel.BottomCenter
+        initialValue = -25F
+        targetValue = 25F
+        infinite = true
+        repeatMode = RepeatMode.Reverse
+        duration = 800
+        easing = EaseInOutCubic
+    },
+
+    actionVerticalTransition = ActionTransition(initialValue = 80F, targetValue = 80F),
+
 )

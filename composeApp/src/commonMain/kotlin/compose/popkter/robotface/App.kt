@@ -35,7 +35,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import compose.popkter.robotface.status.Blink
-import compose.popkter.robotface.status.Music
 import compose.popkter.robotface.status.Ordinary
 import compose.popkter.robotface.status.RobotStatus
 import compose.popkter.robotface.status.RobotStatus.Companion.canBlinkState
@@ -48,17 +47,17 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun App(isLandScape: Boolean = isLandScape()) {
 
     val eyeTransitionState = remember {
-        MutableTransitionState<RobotStatus>(Music)
+        MutableTransitionState<RobotStatus>(Ordinary)
     }
 
     LaunchedEffect(Unit) {
         snapshotFlow { eyeTransitionState.targetState }
             .collect {
                 while (eyeTransitionState.targetState.canBlinkState()) {
-                    delay((200..3000).random().toLong())
+                    delay((240..3000).random().toLong())
                     if (!eyeTransitionState.targetState.canBlinkState()) break
                     eyeTransitionState.targetState = Blink
-                    delay(220)
+                    delay(400)
                     if (!eyeTransitionState.targetState.canBlinkState()) break
                     eyeTransitionState.targetState = Ordinary
                 }

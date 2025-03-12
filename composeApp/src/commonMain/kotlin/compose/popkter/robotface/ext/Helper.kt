@@ -22,8 +22,9 @@ const val SUN_SAMPLE = "☀"
 const val RAIN_SAMPLE = "☔"
 const val COFFEE_SAMPLE = "☕"
 const val MUSIC_SAMPLE = "🎹"
-const val EMAIL_SAMPLE = "✆"
+const val DIALOGUE_SAMPLE = "✆"
 const val SPARK_SAMPLE = "✨"
+const val FOOTBALL_SAMPLE = "⚽"
 
 const val PIVOT_OFFSET = 0.707F
 
