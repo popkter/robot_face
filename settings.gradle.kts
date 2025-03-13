@@ -1,4 +1,4 @@
-rootProject.name = "RobotFace_KMP"
+rootProject.name = "RobotFace"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {

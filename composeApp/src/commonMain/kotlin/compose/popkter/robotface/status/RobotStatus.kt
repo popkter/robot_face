@@ -91,6 +91,7 @@ data object Music : RobotStatus(
     actionVerticalTransition = TransitionProperty(initialValue = 110F, targetValue = 110F),
 
     actionScale = TransitionProperty(
+        initialValue = 1.0F,
         targetValue = 1.1F,
         duration = 400,
         infinite = true,

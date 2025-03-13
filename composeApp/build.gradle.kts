@@ -115,8 +115,13 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "compose.popkter.robotface"
+            packageName = "RobotFace"
             packageVersion = "1.0.0"
+
+            macOS {
+                iconFile.set(project.file("src/commonMain/composeResources/files/mac/round_logo.icns"))
+            }
+
         }
     }
 }
