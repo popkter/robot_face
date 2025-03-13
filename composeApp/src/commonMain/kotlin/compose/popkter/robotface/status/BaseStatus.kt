@@ -9,46 +9,170 @@ import androidx.compose.animation.core.tween
 import androidx.compose.ui.graphics.Color
 import compose.popkter.robotface.ext.PivotLevel
 
+/**
+ * 表情状态
+ */
 sealed class RobotStatus(
 
+    /**
+     * 左眼边缘角度
+     */
     val leftEyeCornerRadius: EyeCornerRadius = EyeCornerRadius(),
+
+    /**
+     * 右眼边缘角度
+     */
     val rightEyeCornerRadius: EyeCornerRadius = EyeCornerRadius(),
 
+    /**
+     * 左眼皮水平半径
+     */
     val leftEyeHorizontalRadius: EyeHorizontalRadius = EyeHorizontalRadius(),
+
+    /**
+     * 右眼皮水平半径
+     */
     val rightEyeHorizontalRadius: EyeHorizontalRadius = EyeHorizontalRadius(),
 
+    /**
+     * 左上眼皮垂直半径
+     */
     val leftTopEyeRadius: EyeVerticalRadius = EyeVerticalRadius(),
+
+    /**
+     * 左下眼皮垂直半径
+     */
     val leftBottomEyeRadius: EyeVerticalRadius = EyeVerticalRadius(),
 
+    /**
+     * 右上眼皮垂直半径
+     */
     val rightTopEyeRadius: EyeVerticalRadius = EyeVerticalRadius(),
+
+    /**
+     * 右下眼皮垂直半径
+     */
     val rightBottomEyeRadius: EyeVerticalRadius = EyeVerticalRadius(),
 
-    val rotate: EyesRotate = EyesRotate(),
-    val horizontalTransition: EyesTransition = EyesTransition(),
-    val verticalTransition: EyesTransition = EyesTransition(),
-    val scaleX: EyesScale = EyesScale(),
-    val scaleY: EyesScale = EyesScale(),
 
+    /**
+     * 眼部旋转角度
+     */
+    val eyesRotate: EyesRotate = EyesRotate(),
+
+    /**
+     * 眼部水平位移
+     */
+    val eyesHorizontalTransition: EyesTransition = EyesTransition(),
+
+    /**
+     * 眼部垂直位移
+     */
+    val eyesVerticalTransition: EyesTransition = EyesTransition(),
+
+    /**
+     * 眼部X方向缩放
+     */
+    val eyesScaleX: EyesScale = EyesScale(),
+
+    /**
+     * 眼部Y方向缩放
+     */
+    val eyesScaleY: EyesScale = EyesScale(),
+
+    /**
+     * 左眼旋转角度
+     */
     val leftEyeRotate: EyesRotate = EyesRotate(),
+
+    /**
+     * 左眼水平位移
+     */
     val leftEyeHorizontalTransition: EyesTransition = EyesTransition(),
+
+    /**
+     * 左眼垂直位移
+     */
     val leftEyeVerticalTransition: EyesTransition = EyesTransition(),
+
+    /**
+     * 左眼X方向缩放
+     */
     val leftEyeScaleX: EyesScale = EyesScale(),
+
+    /**
+     * 左眼Y方向缩放
+     */
     val leftEyeScaleY: EyesScale = EyesScale(),
 
+    /**
+     * 右眼旋转角度
+     */
     val rightEyeRotate: EyesRotate = EyesRotate(),
+
+    /**
+     * 右眼水平位移
+     */
     val rightEyeHorizontalTransition: EyesTransition = EyesTransition(),
+
+    /**
+     * 右眼垂直位移
+     */
     val rightEyeVerticalTransition: EyesTransition = EyesTransition(),
+
+    /**
+     * 右眼X方向缩放
+     */
     val rightEyeScaleX: EyesScale = EyesScale(),
+
+    /**
+     * 右眼Y方向缩放
+     */
     val rightEyeScaleY: EyesScale = EyesScale(),
 
+    /**
+     * 眼部填充颜色
+     */
     val eyesFillColor: Color = Color.Transparent,
 
+    /**
+     * 动作标识符
+     */
     val actionSample: ActionSample = ActionSample(),
+
+    /**
+     * 动作标识符自身的旋转角度(center)
+     */
+    val actionSampleRotate: ActionRotate = ActionRotate(),
+
+    /**
+     * 动作标识符的旋转角度
+     */
     val actionRotate: ActionRotate = ActionRotate(),
+
+    /**
+     * 动作标识符自身的缩放，不建议设置为可变值
+     */
     val actionScale: ActionScale = ActionScale(),
+
+    /**
+     * 动作画布X方向的缩放
+     */
     val actionScaleX: ActionScale = ActionScale(),
+
+    /**
+     * 动作画布Y方向的缩放
+     */
     val actionScaleY: ActionScale = ActionScale(),
+
+    /**
+     * 动作画布水平位移的缩放
+     */
     val actionHorizontalTransition: ActionTransition = ActionTransition(),
+
+    /**
+     * 动作画布垂直位移的缩放
+     */
     val actionVerticalTransition: ActionTransition = ActionTransition()
 
 ) {
@@ -76,7 +200,8 @@ sealed class RobotStatus(
                 Singing,
                 Dialogue,
                 Football,
-                SunGlasses
+                SunGlasses,
+                TakePhoto
             )
         }
 
@@ -173,6 +298,9 @@ open class BaseTransitionProperty(
         }
 ) : ITransitionProperty {
 
+    /**
+     * 调用此方法初始化属性，否则动画生效
+     */
     fun <T : BaseTransitionProperty> init(block: BaseTransitionProperty.() -> Unit): T {
         return this.apply {
             block()

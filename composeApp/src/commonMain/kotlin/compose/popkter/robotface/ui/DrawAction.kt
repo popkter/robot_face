@@ -30,13 +30,16 @@ fun RobotStatus.drawAction(
     infiniteTransition: InfiniteTransition,
     textMeasurer: TextMeasurer
 ) {
-    if (actionSample.sample.isEmpty()) return
     val rotate by actionRotate.generateTransition(finiteTransition, infiniteTransition)
     val scale by actionScale.generateTransition(finiteTransition, infiniteTransition)
     val scaleX by actionScaleX.generateTransition(finiteTransition, infiniteTransition)
     val scaleY by actionScaleY.generateTransition(finiteTransition, infiniteTransition)
     val horizontalTransition by actionHorizontalTransition.generateTransition(finiteTransition, infiniteTransition)
     val verticalTransition by actionVerticalTransition.generateTransition(finiteTransition, infiniteTransition)
+
+    val sampleRoate by actionSampleRotate.generateTransition(finiteTransition,infiniteTransition)
+    if (actionSample.sample.isEmpty()) return
+
 
     Canvas(
         modifier = modifier
@@ -54,23 +57,33 @@ fun RobotStatus.drawAction(
         )
 
         translate(left = horizontalTransition, top = verticalTransition) {
+            /**
+             * action画布旋转角度
+             */
             rotate(
                 degrees = rotate,
                 pivot = actionRotate.centerPivotLevel.calculateRotateCenterPivot(center, size.width / 2)
             ) {
-                scale(scaleX, scaleY) {
-                    drawText(
-                        textLayoutResult = textLayoutResult,
-                        topLeft = Offset(
-                            center.x - (textLayoutResult.size.width) / 2,
-                            center.y - (textLayoutResult.size.height) / 2
-                        ),
-                        drawStyle = Stroke(width = 3F)
-                    )
+                /**
+                 * Sample自身旋转角度
+                 */
+                rotate(
+                    degrees = sampleRoate,
+                    pivot = center
+                ) {
+                    scale(scaleX, scaleY) {
+                        drawRect(color = Color.Gray.copy(alpha = .5F), topLeft = Offset.Zero, size = size)
+                        drawText(
+                            textLayoutResult = textLayoutResult,
+                            topLeft = Offset(
+                                center.x - (textLayoutResult.size.width) / 2,
+                                center.y - (textLayoutResult.size.height) / 2
+                            ),
+                            drawStyle = Stroke(width = 3F)
+                        )
+                    }
                 }
             }
         }
-
-
     }
 }

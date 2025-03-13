@@ -1,6 +1,8 @@
 package compose.popkter.robotface
 
+import androidx.compose.animation.core.InfiniteTransition
 import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.rememberTransition
 import androidx.compose.foundation.background
@@ -24,6 +26,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -69,9 +72,16 @@ fun App(isLandScape: Boolean = isLandScape()) {
         center = Offset(x = 20F, y = 20F)
     )
 
+
     val finiteTransition = rememberTransition(transitionState = eyeTransitionState, label = "finiteTransition")
     val infiniteTransition = rememberInfiniteTransition("infiniteTransition")
     val textMeasurer = rememberTextMeasurer()
+/*
+    val infiniteTransition = key(eyeTransitionState) {
+        val infiniteTransition = rememberInfiniteTransition("infiniteTransition")
+        infiniteTransition
+    }*/
+
 
     if (isLandScape) {
         Row {

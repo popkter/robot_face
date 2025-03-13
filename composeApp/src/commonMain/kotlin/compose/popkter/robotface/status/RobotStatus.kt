@@ -3,12 +3,15 @@ package compose.popkter.robotface.status
 import androidx.compose.animation.core.EaseIn
 import androidx.compose.animation.core.EaseInCubic
 import androidx.compose.animation.core.EaseInOutCubic
+import androidx.compose.animation.core.EaseOutCubic
 import androidx.compose.animation.core.EaseOutExpo
+import androidx.compose.animation.core.EaseOutQuad
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.keyframes
 import androidx.compose.ui.graphics.Color
+import compose.popkter.robotface.ext.CAMERA_SAMPLE
 import compose.popkter.robotface.ext.CLOUD_SAMPLE
 import compose.popkter.robotface.ext.COFFEE_SAMPLE
 import compose.popkter.robotface.ext.DIALOGUE_SAMPLE
@@ -54,7 +57,7 @@ data object Happiness : RobotStatus(
     rightTopEyeRadius = EyeVerticalRadius().init { targetValue = 40F },
     rightBottomEyeRadius = EyeVerticalRadius().init { targetValue = 0F },
 
-    verticalTransition = EyesTransition().init {
+    eyesVerticalTransition = EyesTransition().init {
         targetValue = 10F
         duration = 400
         infinite = true
@@ -64,7 +67,7 @@ data object Happiness : RobotStatus(
 
 
 data object Music : RobotStatus(
-    scaleY = EyesScale().init {
+    eyesScaleY = EyesScale().init {
         initialValue = 1F
         targetValue = 1.05F
         duration = 400
@@ -72,7 +75,7 @@ data object Music : RobotStatus(
         repeatMode = RepeatMode.Reverse
     },
 
-    rotate = EyesRotate().init {
+    eyesRotate = EyesRotate().init {
         centerPivotLevel = PivotLevel.BottomCenter
         initialValue = -10F
         targetValue = 10F
@@ -108,13 +111,13 @@ data object Coldness : RobotStatus(
     rightTopEyeRadius = EyeVerticalRadius().init { targetValue = 15F },
     rightBottomEyeRadius = EyeVerticalRadius().init { targetValue = 15F },
 
-    verticalTransition = EyesTransition().init {
+    eyesVerticalTransition = EyesTransition().init {
         targetValue = 40F
         duration = 300
         easing = LinearEasing
     },
 
-    horizontalTransition = EyesTransition(
+    eyesHorizontalTransition = EyesTransition(
         initialValue = 0F,
         targetValue = 0F,
     ).init<EyesTransition> {
@@ -157,7 +160,7 @@ data object Speechless : RobotStatus(
     rightTopEyeRadius = EyeVerticalRadius().init { targetValue = 20F },
     rightBottomEyeRadius = EyeVerticalRadius().init { targetValue = 20F },
 
-    horizontalTransition = EyesTransition().init {
+    eyesHorizontalTransition = EyesTransition().init {
         initialValue = 0F
         targetValue = 20F
         duration = 1600
@@ -225,7 +228,7 @@ data object FingerHeart : RobotStatus(
     rightTopEyeRadius = EyeVerticalRadius().init { targetValue = 40F },
     rightBottomEyeRadius = EyeVerticalRadius().init { targetValue = 0F },
 
-    rotate = EyesRotate().init {
+    eyesRotate = EyesRotate().init {
         centerPivotLevel = PivotLevel.BottomCenter
         initialValue = -10F
         targetValue = 10F
@@ -271,7 +274,7 @@ data object Angry : RobotStatus(
     rightTopEyeRadius = EyeVerticalRadius().init { targetValue = 10F },
     rightBottomEyeRadius = EyeVerticalRadius().init { targetValue = 60F },
 
-    verticalTransition = EyesTransition().init {
+    eyesVerticalTransition = EyesTransition().init {
         targetValue = 10F
         duration = 600
         infinite = true
@@ -299,7 +302,7 @@ data object Okay : RobotStatus(
     rightTopEyeRadius = EyeVerticalRadius().init { targetValue = 40F },
     rightBottomEyeRadius = EyeVerticalRadius().init { targetValue = 40F },
 
-    rotate = EyesRotate().init {
+    eyesRotate = EyesRotate().init {
         initialValue = -5F
         targetValue = 5F
         duration = 800
@@ -310,7 +313,7 @@ data object Okay : RobotStatus(
 )
 
 data object Talk : RobotStatus(
-    scaleY = EyesScale().init {
+    eyesScaleY = EyesScale().init {
         initialValue = 1F
         targetValue = 1.15F
         duration = 400
@@ -345,7 +348,7 @@ data object Think : RobotStatus(
         repeatMode = RepeatMode.Reverse
     },
 
-    horizontalTransition = EyesTransition().init {
+    eyesHorizontalTransition = EyesTransition().init {
         initialValue = -20F
         targetValue = 20F
         duration = 1000
@@ -356,7 +359,7 @@ data object Think : RobotStatus(
 )
 
 data object Record : RobotStatus(
-    scaleY = EyesScale().init {
+    eyesScaleY = EyesScale().init {
         initialValue = 1F
         targetValue = 1.15F
         duration = 400
@@ -388,12 +391,12 @@ data object Rainy : RobotStatus(
     rightTopEyeRadius = EyeVerticalRadius().init { targetValue = 15F },
     rightBottomEyeRadius = EyeVerticalRadius().init { targetValue = 15F },
 
-    verticalTransition = EyesTransition().init {
+    eyesVerticalTransition = EyesTransition().init {
         targetValue = 40F
         duration = 300
     },
 
-    rotate = EyesRotate().init {
+    eyesRotate = EyesRotate().init {
         initialValue = -5F
         targetValue = 5F
         infinite = true
@@ -431,12 +434,12 @@ data object Cloudy : RobotStatus(
     rightTopEyeRadius = EyeVerticalRadius().init { targetValue = 15F },
     rightBottomEyeRadius = EyeVerticalRadius().init { targetValue = 15F },
 
-    verticalTransition = EyesTransition().init {
+    eyesVerticalTransition = EyesTransition().init {
         targetValue = 40F
         duration = 300
     },
 
-    rotate = EyesRotate().init {
+    eyesRotate = EyesRotate().init {
         initialValue = -5F
         targetValue = 5F
         infinite = true
@@ -475,7 +478,7 @@ data object Sunny : RobotStatus(
     rightTopEyeRadius = EyeVerticalRadius().init { targetValue = 40F },
     rightBottomEyeRadius = EyeVerticalRadius().init { targetValue = 0F },
 
-    verticalTransition = EyesTransition(initialValue = 40F).init {
+    eyesVerticalTransition = EyesTransition(initialValue = 40F).init {
         initialValue = 40F
         targetValue = 60F
         duration = 400
@@ -491,12 +494,13 @@ data object Sunny : RobotStatus(
         duration = 200
     },
 
-    actionScale = ActionScale(initialValue = 1.5F, targetValue = 1.5F),
+//    actionScale = ActionScale(initialValue = 1.5F, targetValue = 1.5F),
 
-    actionRotate = ActionRotate(targetValue = 180F).init {
+
+    actionSampleRotate = ActionRotate(targetValue = 359F).init {
         infinite = true
-        duration = 1200
-        repeatMode = RepeatMode.Reverse
+        duration = 2400
+        repeatMode = RepeatMode.Restart
     }
 )
 
@@ -535,7 +539,7 @@ data object SparkLight : RobotStatus(
         easing = EaseIn
     },
 
-    verticalTransition = EyesTransition().init {
+    eyesVerticalTransition = EyesTransition().init {
         targetValue = 40F
         duration = 300
     },
@@ -572,7 +576,7 @@ data object SparkLight : RobotStatus(
         easing = EaseInCubic
     },
 
-)
+    )
 
 
 data object Coffee : RobotStatus(
@@ -626,7 +630,7 @@ data object Coffee : RobotStatus(
 
 data object Singing : RobotStatus(
 
-    scaleY = EyesScale().init {
+    eyesScaleY = EyesScale().init {
         initialValue = 1F
         targetValue = 1.05F
         duration = 400
@@ -634,7 +638,7 @@ data object Singing : RobotStatus(
         repeatMode = RepeatMode.Reverse
     },
 
-    verticalTransition = EyesTransition().init {
+    eyesVerticalTransition = EyesTransition().init {
         targetValue = 20F
         duration = 800
         infinite = true
@@ -658,7 +662,7 @@ data object Singing : RobotStatus(
 )
 
 data object Dialogue : RobotStatus(
-    horizontalTransition = EyesTransition(
+    eyesHorizontalTransition = EyesTransition(
         initialValue = 0F,
         targetValue = 0F,
     ).init<EyesTransition> {
@@ -740,7 +744,7 @@ data object Football : RobotStatus(
     rightTopEyeRadius = EyeVerticalRadius().init { targetValue = 40F },
     rightBottomEyeRadius = EyeVerticalRadius().init { targetValue = 0F },
 
-    verticalTransition = EyesTransition(initialValue = 40F).init {
+    eyesVerticalTransition = EyesTransition(initialValue = 40F).init {
         initialValue = 0F
         targetValue = 10F
         duration = 400
@@ -763,6 +767,12 @@ data object Football : RobotStatus(
 
     actionVerticalTransition = ActionTransition(initialValue = 80F, targetValue = 80F),
 
+    actionSampleRotate = ActionRotate().init {
+        targetValue = 359F
+        duration = 1600
+        infinite = true
+//        repeatMode = RepeatMode.Reverse
+    }
 )
 
 
@@ -773,7 +783,7 @@ data object SunGlasses : RobotStatus(
     rightTopEyeRadius = EyeVerticalRadius().init { targetValue = 40F },
     rightBottomEyeRadius = EyeVerticalRadius().init { targetValue = 0F },
 
-    verticalTransition = EyesTransition(initialValue = 40F).init {
+    eyesVerticalTransition = EyesTransition(initialValue = 40F).init {
         initialValue = 0F
         targetValue = 10F
         duration = 400
@@ -791,5 +801,63 @@ data object SunGlasses : RobotStatus(
         repeatMode = RepeatMode.Reverse
     },
 
-    actionScale =  ActionScale(initialValue = 1F, targetValue = 2.8F)
+    actionScale = ActionScale(initialValue = 1F, targetValue = 2.8F)
+)
+
+data object TakePhoto : RobotStatus(
+
+    leftTopEyeRadius = EyeVerticalRadius().init {
+        targetValue = 40F
+    },
+    leftBottomEyeRadius = EyeVerticalRadius().init {
+        initialValue = 0F
+        targetValue = 40F
+        infinite = false
+        duration = 400
+    },
+    rightTopEyeRadius = EyeVerticalRadius().init {
+        targetValue = 40F
+    },
+    rightBottomEyeRadius = EyeVerticalRadius().init {
+        initialValue = 0F
+        targetValue = 40F
+        infinite = false
+        duration = 400
+    },
+
+    eyesVerticalTransition = EyesTransition(initialValue = 40F).init {
+        initialValue = -10F
+        targetValue = 0F
+        duration = 800
+        infinite = true
+        repeatMode = RepeatMode.Reverse
+    },
+
+    actionSample = ActionSample(CAMERA_SAMPLE),
+
+    actionVerticalTransition = ActionTransition().init {
+        initialValue = 150F
+        targetValue = 50F
+        duration = 600
+        infinite = false
+        repeatMode = RepeatMode.Reverse
+        easing = EaseOutQuad
+    },
+
+    actionScale = ActionScale(initialValue = 1F, targetValue = 1.5F),
+
+    actionRotate = ActionRotate().apply {
+        infinite = false
+        duration = 800
+        animationSpec = keyframes {
+            durationMillis = duration
+            0F at 0
+
+            0F at 600
+
+            10F at 700
+
+            (0F) at 800
+        }
+    }
 )

@@ -26,6 +26,7 @@ const val DIALOGUE_SAMPLE = "✆"
 const val SPARK_SAMPLE = "✨"
 const val FOOTBALL_SAMPLE = "⚽"
 const val SUNGLASS_SAMPLE = "\uD83D\uDD76"
+const val CAMERA_SAMPLE = "\uD83D\uDCF7"
 
 const val PIVOT_OFFSET = 0.707F
 
@@ -51,6 +52,9 @@ fun ITransitionProperty.generateTransition(
     }
 }
 
+/**
+ * 旋转中心点，面部内切水平正方形顶点
+ */
 sealed class PivotLevel {
     data object TopLeft : PivotLevel()
     data object TopCenter : PivotLevel()

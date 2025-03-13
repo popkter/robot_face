@@ -47,19 +47,19 @@ fun RobotStatus.drawEyes(
     val rightEyeCornerRadius by rightEyeCornerRadius.generateTransition(finiteTransition, infiniteTransition)
 
     //both eyes rotate
-    val eyesRotatedAngle by rotate.generateTransition(finiteTransition, infiniteTransition)
+    val eyesRotatedAngle by eyesRotate.generateTransition(finiteTransition, infiniteTransition)
 
     //both eyes horizontal translation
-    val eyesHorizontalTransition by horizontalTransition.generateTransition(finiteTransition, infiniteTransition)
+    val eyesHorizontalTransition by eyesHorizontalTransition.generateTransition(finiteTransition, infiniteTransition)
 
     //both eyes vertical translation
-    val eyesVerticalTransition by verticalTransition.generateTransition(finiteTransition, infiniteTransition)
+    val eyesVerticalTransition by eyesVerticalTransition.generateTransition(finiteTransition, infiniteTransition)
 
     //both eyes scaleX
-    val eyesScaleX by scaleX.generateTransition(finiteTransition, infiniteTransition)
+    val eyesScaleX by eyesScaleX.generateTransition(finiteTransition, infiniteTransition)
 
     //both eyes scaleY
-    val eyesScaleY by scaleY.generateTransition(finiteTransition, infiniteTransition)
+    val eyesScaleY by eyesScaleY.generateTransition(finiteTransition, infiniteTransition)
 
     val leftEyeRotatedAngle by leftEyeRotate.generateTransition(finiteTransition, infiniteTransition)
 
@@ -93,7 +93,7 @@ fun RobotStatus.drawEyes(
         translate(left = eyesHorizontalTransition, top = eyesVerticalTransition) {
             rotate(
                 degrees = eyesRotatedAngle,
-                pivot = rotate.centerPivotLevel.calculateRotateCenterPivot(center, size.width / 2)
+                pivot = eyesRotate.centerPivotLevel.calculateRotateCenterPivot(center, size.width / 2)
             ) {
                 scale(
                     scaleX = eyesScaleX,
