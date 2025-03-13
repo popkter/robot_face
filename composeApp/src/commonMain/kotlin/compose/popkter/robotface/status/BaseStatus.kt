@@ -9,13 +9,16 @@ import androidx.compose.animation.core.tween
 import compose.popkter.robotface.ext.ActionSample
 import compose.popkter.robotface.ext.PivotLevel
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 /**
  * 表情状态
  */
 
 @Serializable
-sealed class RobotStatus(
+open class RobotStatus(
 
     /**
      * 左眼边缘角度
@@ -205,7 +208,10 @@ sealed class RobotStatus(
                 Football,
                 SunGlasses,
                 TakePhoto,
-                Focus
+                Focus,
+                Json.decodeFromString("""
+                    {"leftEyeCornerRadius":{"targetValue":50.0},"rightEyeCornerRadius":{"targetValue":50.0},"leftEyeHorizontalRadius":{"targetValue":50.0},"rightEyeHorizontalRadius":{"targetValue":50.0},"leftTopEyeRadius":{"targetValue":10.0},"leftBottomEyeRadius":{"targetValue":50.0},"rightTopEyeRadius":{"targetValue":10.0},"rightBottomEyeRadius":{"targetValue":50.0},"eyesFillColor":"#FF0000","eyesVerticalTransition":{"targetValue":10.0,"duration":600,"infinite":true,"repeatMode":"Reverse"},"leftEyeRotate":{"targetValue":15.0,"duration":300},"rightEyeRotate":{"targetValue":-15.0,"duration":300},"actionSample":{"sample":"🫵"},"actionHorizontalTransition":{"targetValue":-80.0},"actionVerticalTransition":{"initialValue":90.0,"targetValue":100.0,"duration":600,"infinite":true,"repeatMode":"Reverse"}}
+                """.trimIndent()) as RobotStatus
             )
         }
 
@@ -222,9 +228,9 @@ data class TransitionProperty(
     val duration: Int = 200,
     val infinite: Boolean = false,
     val repeatMode: RepeatMode = RepeatMode.Restart,
-    val easing: Easing = LinearEasing,
     val centerPivotLevel: PivotLevel = PivotLevel.Center,
-    var animationSpec: AnimationSpec<Float>? = null
+    @Transient val easing: Easing = LinearEasing,
+    @Transient var animationSpec: AnimationSpec<Float>? = null
 ) {
 
     init {
@@ -244,33 +250,5 @@ data class TransitionProperty(
                     easing = easing
                 )
             }
-    }
-
-    /**
-     * 调用此方法初始化属性，否则动画生效
-     */
-    fun init(block: TransitionProperty.() -> Unit): TransitionProperty {
-        return this.apply {
-            block()
-            updateAnimation()
-        }
-    }
-
-    private fun updateAnimation() {
-        animationSpec = if (infinite) {
-            infiniteRepeatable(
-                animation =
-                    tween(
-                        durationMillis = duration,
-                        easing = easing
-                    ),
-                repeatMode = repeatMode
-            )
-        } else {
-            tween(
-                durationMillis = duration,
-                easing = easing
-            )
-        }
     }
 }

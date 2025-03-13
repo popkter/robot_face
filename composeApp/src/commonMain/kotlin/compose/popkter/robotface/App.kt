@@ -38,16 +38,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import compose.popkter.robotface.status.Blink
+import compose.popkter.robotface.status.Focus
 import compose.popkter.robotface.status.Ordinary
 import compose.popkter.robotface.status.RobotStatus
 import compose.popkter.robotface.status.RobotStatus.Companion.canBlinkState
 import compose.popkter.robotface.ui.drawAction
 import compose.popkter.robotface.ui.drawEyes
 import kotlinx.coroutines.delay
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun App(isLandScape: Boolean = isLandScape()) {
+
+    val json = Json.parseToJsonElement(Json.encodeToString<RobotStatus>(Focus))
+    println("Focus Json = $json")
+
 
     val eyeTransitionState = remember {
         MutableTransitionState<RobotStatus>(Ordinary)
@@ -76,12 +83,6 @@ fun App(isLandScape: Boolean = isLandScape()) {
     val finiteTransition = rememberTransition(transitionState = eyeTransitionState, label = "finiteTransition")
     val infiniteTransition = rememberInfiniteTransition("infiniteTransition")
     val textMeasurer = rememberTextMeasurer()
-/*
-    val infiniteTransition = key(eyeTransitionState) {
-        val infiniteTransition = rememberInfiniteTransition("infiniteTransition")
-        infiniteTransition
-    }*/
-
 
     if (isLandScape) {
         Row {
