@@ -37,7 +37,7 @@ fun RobotStatus.drawAction(
     val horizontalTransition by actionHorizontalTransition.generateTransition(finiteTransition, infiniteTransition)
     val verticalTransition by actionVerticalTransition.generateTransition(finiteTransition, infiniteTransition)
 
-    val sampleRoate by actionSampleRotate.generateTransition(finiteTransition,infiniteTransition)
+    val sampleRotate by actionSampleRotate.generateTransition(finiteTransition,infiniteTransition)
     if (actionSample.sample.isEmpty()) return
 
 
@@ -68,11 +68,11 @@ fun RobotStatus.drawAction(
                  * Sample自身旋转角度
                  */
                 rotate(
-                    degrees = sampleRoate,
+                    degrees = sampleRotate,
                     pivot = center
                 ) {
                     scale(scaleX, scaleY) {
-                        drawRect(color = Color.Gray.copy(alpha = .5F), topLeft = Offset.Zero, size = size)
+//                        drawRect(color = Color.Gray.copy(alpha = .5F), topLeft = Offset.Zero, size = size)
                         drawText(
                             textLayoutResult = textLayoutResult,
                             topLeft = Offset(

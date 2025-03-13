@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.drawscope.translate
 import compose.popkter.robotface.ext.calculateRotateCenterPivot
 import compose.popkter.robotface.ext.generateTransition
+import compose.popkter.robotface.ext.hexStringToColor
 import compose.popkter.robotface.status.RobotStatus
 import kotlin.math.abs
 
@@ -111,7 +112,7 @@ fun RobotStatus.drawEyes(
                         rotateAngle = leftEyeRotatedAngle,
                         scaleX = leftEyeScaleX,
                         scaleY = leftEyeScaleY,
-                        fillColor = eyesFillColor
+                        fillColor = hexStringToColor(eyesFillColor)
                     )
 
                     drawEye(
@@ -125,7 +126,7 @@ fun RobotStatus.drawEyes(
                         rotateAngle = rightEyeRotatedAngle,
                         scaleX = rightEyeScaleX,
                         scaleY = rightEyeScaleY,
-                        fillColor = eyesFillColor
+                        fillColor = hexStringToColor(eyesFillColor)
                     )
                 }
             }

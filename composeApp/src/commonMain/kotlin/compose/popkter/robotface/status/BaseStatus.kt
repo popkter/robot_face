@@ -6,134 +6,136 @@ import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.tween
-import androidx.compose.ui.graphics.Color
+import compose.popkter.robotface.ext.ActionSample
 import compose.popkter.robotface.ext.PivotLevel
+import kotlinx.serialization.Serializable
 
 /**
  * 表情状态
  */
+
+@Serializable
 sealed class RobotStatus(
 
     /**
      * 左眼边缘角度
      */
-    val leftEyeCornerRadius: EyeCornerRadius = EyeCornerRadius(),
+    val leftEyeCornerRadius: TransitionProperty = TransitionProperty(initialValue = 30F, targetValue = 30F),
 
     /**
      * 右眼边缘角度
      */
-    val rightEyeCornerRadius: EyeCornerRadius = EyeCornerRadius(),
+    val rightEyeCornerRadius: TransitionProperty = TransitionProperty(initialValue = 30F, targetValue = 30F),
 
     /**
      * 左眼皮水平半径
      */
-    val leftEyeHorizontalRadius: EyeHorizontalRadius = EyeHorizontalRadius(),
+    val leftEyeHorizontalRadius: TransitionProperty = TransitionProperty(initialValue = 30F, targetValue = 30F),
 
     /**
      * 右眼皮水平半径
      */
-    val rightEyeHorizontalRadius: EyeHorizontalRadius = EyeHorizontalRadius(),
+    val rightEyeHorizontalRadius: TransitionProperty = TransitionProperty(initialValue = 30F, targetValue = 30F),
 
     /**
      * 左上眼皮垂直半径
      */
-    val leftTopEyeRadius: EyeVerticalRadius = EyeVerticalRadius(),
+    val leftTopEyeRadius: TransitionProperty = TransitionProperty(initialValue = 60F, targetValue = 60F),
 
     /**
      * 左下眼皮垂直半径
      */
-    val leftBottomEyeRadius: EyeVerticalRadius = EyeVerticalRadius(),
+    val leftBottomEyeRadius: TransitionProperty = TransitionProperty(initialValue = 60F, targetValue = 60F),
 
     /**
      * 右上眼皮垂直半径
      */
-    val rightTopEyeRadius: EyeVerticalRadius = EyeVerticalRadius(),
+    val rightTopEyeRadius: TransitionProperty = TransitionProperty(initialValue = 60F, targetValue = 60F),
 
     /**
      * 右下眼皮垂直半径
      */
-    val rightBottomEyeRadius: EyeVerticalRadius = EyeVerticalRadius(),
-
-
-    /**
-     * 眼部旋转角度
-     */
-    val eyesRotate: EyesRotate = EyesRotate(),
-
-    /**
-     * 眼部水平位移
-     */
-    val eyesHorizontalTransition: EyesTransition = EyesTransition(),
-
-    /**
-     * 眼部垂直位移
-     */
-    val eyesVerticalTransition: EyesTransition = EyesTransition(),
-
-    /**
-     * 眼部X方向缩放
-     */
-    val eyesScaleX: EyesScale = EyesScale(),
-
-    /**
-     * 眼部Y方向缩放
-     */
-    val eyesScaleY: EyesScale = EyesScale(),
-
-    /**
-     * 左眼旋转角度
-     */
-    val leftEyeRotate: EyesRotate = EyesRotate(),
-
-    /**
-     * 左眼水平位移
-     */
-    val leftEyeHorizontalTransition: EyesTransition = EyesTransition(),
-
-    /**
-     * 左眼垂直位移
-     */
-    val leftEyeVerticalTransition: EyesTransition = EyesTransition(),
-
-    /**
-     * 左眼X方向缩放
-     */
-    val leftEyeScaleX: EyesScale = EyesScale(),
-
-    /**
-     * 左眼Y方向缩放
-     */
-    val leftEyeScaleY: EyesScale = EyesScale(),
-
-    /**
-     * 右眼旋转角度
-     */
-    val rightEyeRotate: EyesRotate = EyesRotate(),
-
-    /**
-     * 右眼水平位移
-     */
-    val rightEyeHorizontalTransition: EyesTransition = EyesTransition(),
-
-    /**
-     * 右眼垂直位移
-     */
-    val rightEyeVerticalTransition: EyesTransition = EyesTransition(),
-
-    /**
-     * 右眼X方向缩放
-     */
-    val rightEyeScaleX: EyesScale = EyesScale(),
-
-    /**
-     * 右眼Y方向缩放
-     */
-    val rightEyeScaleY: EyesScale = EyesScale(),
+    val rightBottomEyeRadius: TransitionProperty = TransitionProperty(initialValue = 60F, targetValue = 60F),
 
     /**
      * 眼部填充颜色
      */
-    val eyesFillColor: Color = Color.Transparent,
+    val eyesFillColor: String = "#00000000",
+
+    /**
+     * 眼部旋转角度
+     */
+    val eyesRotate: TransitionProperty = TransitionProperty(),
+
+    /**
+     * 眼部水平位移
+     */
+    val eyesHorizontalTransition: TransitionProperty = TransitionProperty(),
+
+    /**
+     * 眼部垂直位移
+     */
+    val eyesVerticalTransition: TransitionProperty = TransitionProperty(),
+
+    /**
+     * 眼部X方向缩放
+     */
+    val eyesScaleX: TransitionProperty = TransitionProperty(initialValue = 1F, targetValue = 1F),
+
+    /**
+     * 眼部Y方向缩放
+     */
+    val eyesScaleY: TransitionProperty = TransitionProperty(initialValue = 1F, targetValue = 1F),
+
+    /**
+     * 左眼旋转角度
+     */
+    val leftEyeRotate: TransitionProperty = TransitionProperty(),
+
+    /**
+     * 左眼水平位移
+     */
+    val leftEyeHorizontalTransition: TransitionProperty = TransitionProperty(),
+
+    /**
+     * 左眼垂直位移
+     */
+    val leftEyeVerticalTransition: TransitionProperty = TransitionProperty(),
+
+    /**
+     * 左眼X方向缩放
+     */
+    val leftEyeScaleX: TransitionProperty = TransitionProperty(initialValue = 1F, targetValue = 1F),
+
+    /**
+     * 左眼Y方向缩放
+     */
+    val leftEyeScaleY: TransitionProperty = TransitionProperty(initialValue = 1F, targetValue = 1F),
+
+    /**
+     * 右眼旋转角度
+     */
+    val rightEyeRotate: TransitionProperty = TransitionProperty(),
+
+    /**
+     * 右眼水平位移
+     */
+    val rightEyeHorizontalTransition: TransitionProperty = TransitionProperty(),
+
+    /**
+     * 右眼垂直位移
+     */
+    val rightEyeVerticalTransition: TransitionProperty = TransitionProperty(),
+
+    /**
+     * 右眼X方向缩放
+     */
+    val rightEyeScaleX: TransitionProperty = TransitionProperty(initialValue = 1F, targetValue = 1F),
+
+    /**
+     * 右眼Y方向缩放
+     */
+    val rightEyeScaleY: TransitionProperty = TransitionProperty(initialValue = 1F, targetValue = 1F),
 
     /**
      * 动作标识符
@@ -143,39 +145,40 @@ sealed class RobotStatus(
     /**
      * 动作标识符自身的旋转角度(center)
      */
-    val actionSampleRotate: ActionRotate = ActionRotate(),
+    val actionSampleRotate: TransitionProperty = TransitionProperty(),
 
     /**
      * 动作标识符的旋转角度
      */
-    val actionRotate: ActionRotate = ActionRotate(),
+    val actionRotate: TransitionProperty = TransitionProperty(),
 
     /**
      * 动作标识符自身的缩放，不建议设置为可变值
      */
-    val actionScale: ActionScale = ActionScale(),
+    val actionScale: TransitionProperty = TransitionProperty(initialValue = 1F, targetValue = 1F),
 
     /**
      * 动作画布X方向的缩放
      */
-    val actionScaleX: ActionScale = ActionScale(),
+    val actionScaleX: TransitionProperty = TransitionProperty(initialValue = 1F, targetValue = 1F),
 
     /**
      * 动作画布Y方向的缩放
      */
-    val actionScaleY: ActionScale = ActionScale(),
+    val actionScaleY: TransitionProperty = TransitionProperty(initialValue = 1F, targetValue = 1F),
 
     /**
-     * 动作画布水平位移的缩放
+     * 动作画布水平位移
      */
-    val actionHorizontalTransition: ActionTransition = ActionTransition(),
+    val actionHorizontalTransition: TransitionProperty = TransitionProperty(),
 
     /**
-     * 动作画布垂直位移的缩放
+     * 动作画布垂直位移
      */
-    val actionVerticalTransition: ActionTransition = ActionTransition()
+    val actionVerticalTransition: TransitionProperty = TransitionProperty(),
 
-) {
+    ) {
+
     companion object {
         val allStates by lazy {
             listOf(
@@ -201,7 +204,8 @@ sealed class RobotStatus(
                 Dialogue,
                 Football,
                 SunGlasses,
-                TakePhoto
+                TakePhoto,
+                Focus
             )
         }
 
@@ -211,111 +215,55 @@ sealed class RobotStatus(
     }
 }
 
-data class EyesTransition(
-    override var initialValue: Float = 0F,
-    override var targetValue: Float = 0F
-) : BaseTransitionProperty()
+@Serializable
+data class TransitionProperty(
+    val initialValue: Float = 0F,
+    val targetValue: Float = 0F,
+    val duration: Int = 200,
+    val infinite: Boolean = false,
+    val repeatMode: RepeatMode = RepeatMode.Restart,
+    val easing: Easing = LinearEasing,
+    val centerPivotLevel: PivotLevel = PivotLevel.Center,
+    var animationSpec: AnimationSpec<Float>? = null
+) {
 
-data class EyesScale(
-    override var initialValue: Float = 1F,
-    override var targetValue: Float = 1F
-) : BaseTransitionProperty()
-
-data class EyesRotate(
-    override var initialValue: Float = 0F,
-    override var targetValue: Float = 0F
-) : BaseTransitionProperty()
-
-data class ActionSample(val sample: String = "")
-
-data class ActionTransition(
-    override var initialValue: Float = 0F,
-    override var targetValue: Float = 0F
-) : BaseTransitionProperty()
-
-data class ActionScale(
-    override var initialValue: Float = 1F,
-    override var targetValue: Float = 1F
-) : BaseTransitionProperty()
-
-data class ActionRotate(
-    override var initialValue: Float = 0F,
-    override var targetValue: Float = 0F
-) : BaseTransitionProperty()
-
-
-data class EyeCornerRadius(
-    override var initialValue: Float = 30F,
-    override var targetValue: Float = 30F
-) : BaseTransitionProperty()
-
-data class EyeHorizontalRadius(
-    override var initialValue: Float = 30F,
-    override var targetValue: Float = 30F
-) : BaseTransitionProperty()
-
-data class EyeVerticalRadius(
-    override var initialValue: Float = 60F,
-    override var targetValue: Float = 60F,
-    override var duration: Int = 240
-) : BaseTransitionProperty()
-
-
-interface ITransitionProperty {
-    val initialValue: Float
-    val targetValue: Float
-    val duration: Int
-    val infinite: Boolean
-    val repeatMode: RepeatMode
-    val easing: Easing
-    val animationSpec: AnimationSpec<Float>
-    val centerPivotLevel: PivotLevel
-}
-
-open class BaseTransitionProperty(
-    override var initialValue: Float = 0F,
-    override var targetValue: Float = 0F,
-    override var duration: Int = 200,
-    override var infinite: Boolean = false,
-    override var repeatMode: RepeatMode = RepeatMode.Restart,
-    override var easing: Easing = LinearEasing,
-    override var centerPivotLevel: PivotLevel = PivotLevel.Center,
-    override var animationSpec: AnimationSpec<Float> =
-        if (infinite) {
-            infiniteRepeatable(
-                animation =
-                    tween(
-                        durationMillis = duration,
-                        easing = easing
-                    ),
-                repeatMode = repeatMode
-            )
-        } else {
-            tween(
-                durationMillis = duration,
-                easing = easing
-            )
-        }
-) : ITransitionProperty {
+    init {
+        animationSpec =
+            if (infinite) {
+                infiniteRepeatable(
+                    animation =
+                        tween(
+                            durationMillis = duration,
+                            easing = easing
+                        ),
+                    repeatMode = repeatMode
+                )
+            } else {
+                tween(
+                    durationMillis = duration,
+                    easing = easing
+                )
+            }
+    }
 
     /**
      * 调用此方法初始化属性，否则动画生效
      */
-    fun <T : BaseTransitionProperty> init(block: BaseTransitionProperty.() -> Unit): T {
+    fun init(block: TransitionProperty.() -> Unit): TransitionProperty {
         return this.apply {
             block()
             updateAnimation()
-        } as T
+        }
     }
 
     private fun updateAnimation() {
         animationSpec = if (infinite) {
             infiniteRepeatable(
                 animation =
-                tween(
-                    durationMillis = duration,
-                    easing = easing
-                ),
+                    tween(
+                        durationMillis = duration,
+                        easing = easing
+                    ),
                 repeatMode = repeatMode
             )
         } else {
