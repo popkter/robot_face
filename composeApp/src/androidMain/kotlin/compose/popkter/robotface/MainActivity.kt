@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalConfiguration
@@ -12,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import compose.popkter.robotface.viewmodel.RobotViewModel
 
 @Composable
 fun isLandscape(): Boolean {
@@ -20,6 +22,8 @@ fun isLandscape(): Boolean {
 }
 
 class MainActivity : ComponentActivity() {
+
+    private val viewModel: RobotViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -32,9 +36,13 @@ class MainActivity : ComponentActivity() {
 
 
         setContent {
-            App(isLandscape())
+            App(isLandscape(), viewModel)
         }
     }
+
+    //此处进行语音初始化
+
+    //通过语音驱动viewmodel更新RobotStatus
 }
 
 @Preview

@@ -1,8 +1,6 @@
 package compose.popkter.robotface
 
-import androidx.compose.animation.core.InfiniteTransition
 import androidx.compose.animation.core.MutableTransitionState
-import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.rememberTransition
 import androidx.compose.foundation.background
@@ -26,7 +24,8 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.key
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -44,20 +43,22 @@ import compose.popkter.robotface.status.RobotStatus
 import compose.popkter.robotface.status.RobotStatus.Companion.canBlinkState
 import compose.popkter.robotface.ui.drawAction
 import compose.popkter.robotface.ui.drawEyes
+import compose.popkter.robotface.viewmodel.RobotViewModel
 import kotlinx.coroutines.delay
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun App(isLandScape: Boolean = isLandScape()) {
+fun App(isLandScape: Boolean = isLandScape(), viewModel: RobotViewModel = RobotViewModel()) {
 
     val json = Json.parseToJsonElement(Json.encodeToString<RobotStatus>(Focus))
     println("Focus Json = $json")
 
+    val robotStatus by viewModel.robotStatus.collectAsState()
 
     val eyeTransitionState = remember {
-        MutableTransitionState<RobotStatus>(Ordinary)
+        MutableTransitionState(robotStatus)
     }
 
     LaunchedEffect(Unit) {
@@ -66,10 +67,10 @@ fun App(isLandScape: Boolean = isLandScape()) {
                 while (eyeTransitionState.targetState.canBlinkState()) {
                     delay((240..3000).random().toLong())
                     if (!eyeTransitionState.targetState.canBlinkState()) break
-                    eyeTransitionState.targetState = Blink
+                    viewModel.updateStatus(Blink)
                     delay(400)
                     if (!eyeTransitionState.targetState.canBlinkState()) break
-                    eyeTransitionState.targetState = Ordinary
+                    viewModel.updateStatus(Ordinary)
                 }
             }
     }
@@ -136,7 +137,7 @@ fun App(isLandScape: Boolean = isLandScape()) {
                                         ), shape = RoundedCornerShape(5.dp)
                                     )
                                     .clip(RoundedCornerShape(5.dp))
-                                    .clickable { eyeTransitionState.targetState = state },
+                                    .clickable { viewModel.updateStatus(state) },
                                 color = Color.Cyan.copy(alpha = 0.3F),
                             ) {
                                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -226,7 +227,7 @@ fun App(isLandScape: Boolean = isLandScape()) {
                                         ), shape = RoundedCornerShape(5.dp)
                                     )
                                     .clip(RoundedCornerShape(5.dp))
-                                    .clickable { eyeTransitionState.targetState = state },
+                                    .clickable { viewModel.updateStatus(state) },
                                 color = Color.Cyan.copy(alpha = 0.3F),
                             ) {
                                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
