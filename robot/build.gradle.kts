@@ -1,7 +1,3 @@
-@file:OptIn(KspExperimental::class)
-
-import com.google.devtools.ksp.KspExperimental
-
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -33,24 +29,15 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 
-    kotlin {
-        sourceSets.main {
-            kotlin.srcDir("build/generated/ksp/debug/kotlin")
-        }
-    }
-
     kotlinOptions {
         jvmTarget = "11"
     }
 
-    ksp {
-        useKsp2 = false
-    }
 }
 
 dependencies {
 
-    "ksp"(project(":ksp"))
+    ksp(project(":ksp"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     testImplementation(libs.junit)
