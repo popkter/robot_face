@@ -2,6 +2,11 @@
 
 这是一个基于Android的机器人表情模块，使用现代Android开发技术栈构建。
 
+## 演示
+
+https://github.com/user-attachments/assets/164f2b17-9f0d-4329-b587-97174255f30e
+
+
 ## 技术栈
 
 - Kotlin
