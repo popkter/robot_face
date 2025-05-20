@@ -21,4 +21,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "RobotFace"
 include(":app")
- 
+include(":robot")
+include(":ksp")
