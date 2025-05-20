@@ -1,7 +1,6 @@
 package com.popkter.robot
 
 import androidx.compose.animation.core.MutableTransitionState
-import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.rememberTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -23,13 +22,9 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.popkter.robot.status.RobotStatus
-import com.popkter.robot.status.Think
-import com.popkter.robot.status.transitionMap
 import com.popkter.robot.ui.DrawAction
 import com.popkter.robot.ui.DrawEyes
 import com.popkter.robot.viewmodel.RobotViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 
 
@@ -66,7 +61,7 @@ fun Robot(
     }
 
     val finiteTransition = rememberTransition(transitionState = eyeTransitionState, label = "finiteTransition")
-    val infiniteTransition = rememberInfiniteTransition("infiniteTransition")
+
     val textMeasurer = rememberTextMeasurer()
 
     Box(
@@ -81,13 +76,11 @@ fun Robot(
             DrawEyes(
                 modifier = Modifier.matchParentSize(),
                 finiteTransition = finiteTransition,
-                infiniteTransition = infiniteTransition
             )
 
             DrawAction(
                 modifier = Modifier.matchParentSize(),
                 finiteTransition = finiteTransition,
-                infiniteTransition = infiniteTransition,
                 textMeasurer = textMeasurer
             )
         }

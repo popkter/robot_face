@@ -632,7 +632,7 @@ data object Coffee : RobotStatus(
     ),
 
     actionRotate = TransitionProperty(
-        centerPivotLevel = PivotLevel.Center,
+        centerPivotLevel = PivotLevel.CenterLeft,
         initialValue = -5F,
         targetValue = 5F,
         infinite = true,

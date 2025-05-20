@@ -29,58 +29,57 @@ import kotlin.math.abs
 fun RobotStatus.DrawEyes(
     modifier: Modifier,
     finiteTransition: Transition<RobotStatus>,
-    infiniteTransition: InfiniteTransition
 ) {
-    val leftEyeHorizontalRadius by leftEyeHorizontalRadius.generateTransition(finiteTransition, infiniteTransition)
+    val leftEyeHorizontalRadius by leftEyeHorizontalRadius.generateTransition(finiteTransition)
 
-    val rightEyeHorizontalRadius by rightEyeHorizontalRadius.generateTransition(finiteTransition, infiniteTransition)
+    val rightEyeHorizontalRadius by rightEyeHorizontalRadius.generateTransition(finiteTransition)
 
-    val leftUpperEyelidRadius by leftTopEyeRadius.generateTransition(finiteTransition, infiniteTransition)
+    val leftUpperEyelidRadius by leftTopEyeRadius.generateTransition(finiteTransition)
 
-    val leftLowerEyelidRadius by leftBottomEyeRadius.generateTransition(finiteTransition, infiniteTransition)
+    val leftLowerEyelidRadius by leftBottomEyeRadius.generateTransition(finiteTransition)
 
-    val rightUpperEyelidRadius by rightTopEyeRadius.generateTransition(finiteTransition, infiniteTransition)
+    val rightUpperEyelidRadius by rightTopEyeRadius.generateTransition(finiteTransition)
 
-    val rightLowerEyelidRadius by rightBottomEyeRadius.generateTransition(finiteTransition, infiniteTransition)
+    val rightLowerEyelidRadius by rightBottomEyeRadius.generateTransition(finiteTransition)
 
-    val leftEyeCornerRadius by leftEyeCornerRadius.generateTransition(finiteTransition, infiniteTransition)
+    val leftEyeCornerRadius by leftEyeCornerRadius.generateTransition(finiteTransition)
 
-    val rightEyeCornerRadius by rightEyeCornerRadius.generateTransition(finiteTransition, infiniteTransition)
+    val rightEyeCornerRadius by rightEyeCornerRadius.generateTransition(finiteTransition)
 
     //both eyes rotate
-    val eyesRotatedAngle by eyesRotate.generateTransition(finiteTransition, infiniteTransition)
+    val eyesRotatedAngle by eyesRotate.generateTransition(finiteTransition)
 
     //both eyes horizontal translation
-    val eyesHorizontalTransition by eyesHorizontalTransition.generateTransition(finiteTransition, infiniteTransition)
+    val eyesHorizontalTransition by eyesHorizontalTransition.generateTransition(finiteTransition)
 
     //both eyes vertical translation
-    val eyesVerticalTransition by eyesVerticalTransition.generateTransition(finiteTransition, infiniteTransition)
+    val eyesVerticalTransition by eyesVerticalTransition.generateTransition(finiteTransition)
 
     //both eyes scaleX
-    val eyesScaleX by eyesScaleX.generateTransition(finiteTransition, infiniteTransition)
+    val eyesScaleX by eyesScaleX.generateTransition(finiteTransition)
 
     //both eyes scaleY
-    val eyesScaleY by eyesScaleY.generateTransition(finiteTransition, infiniteTransition)
+    val eyesScaleY by eyesScaleY.generateTransition(finiteTransition)
 
-    val leftEyeRotatedAngle by leftEyeRotate.generateTransition(finiteTransition, infiniteTransition)
+    val leftEyeRotatedAngle by leftEyeRotate.generateTransition(finiteTransition)
 
-    val rightEyeRotatedAngle by rightEyeRotate.generateTransition(finiteTransition, infiniteTransition)
+    val rightEyeRotatedAngle by rightEyeRotate.generateTransition(finiteTransition)
 
-    val leftEyeScaleX by leftEyeScaleX.generateTransition(finiteTransition, infiniteTransition)
+    val leftEyeScaleX by leftEyeScaleX.generateTransition(finiteTransition)
 
-    val rightEyeScaleX by rightEyeScaleX.generateTransition(finiteTransition, infiniteTransition)
+    val rightEyeScaleX by rightEyeScaleX.generateTransition(finiteTransition)
 
-    val leftEyeScaleY by leftEyeScaleY.generateTransition(finiteTransition, infiniteTransition)
+    val leftEyeScaleY by leftEyeScaleY.generateTransition(finiteTransition)
 
-    val rightEyeScaleY by rightEyeScaleY.generateTransition(finiteTransition, infiniteTransition)
+    val rightEyeScaleY by rightEyeScaleY.generateTransition(finiteTransition)
 
-    val leftEyeHorizontalTransition by leftEyeHorizontalTransition.generateTransition(finiteTransition, infiniteTransition)
+    val leftEyeHorizontalTransition by leftEyeHorizontalTransition.generateTransition(finiteTransition)
 
-    val rightEyeHorizontalTransition by rightEyeHorizontalTransition.generateTransition(finiteTransition, infiniteTransition)
+    val rightEyeHorizontalTransition by rightEyeHorizontalTransition.generateTransition(finiteTransition)
 
-    val leftEyeVerticalTransition by leftEyeVerticalTransition.generateTransition(finiteTransition, infiniteTransition)
+    val leftEyeVerticalTransition by leftEyeVerticalTransition.generateTransition(finiteTransition)
 
-    val rightEyeVerticalTransition by rightEyeVerticalTransition.generateTransition(finiteTransition, infiniteTransition)
+    val rightEyeVerticalTransition by rightEyeVerticalTransition.generateTransition(finiteTransition)
 
     Canvas(modifier = modifier) {
 
@@ -134,6 +133,7 @@ fun RobotStatus.DrawEyes(
     }
 
 }
+
 /**
  * draw single eye
  * [center] Center Pivot

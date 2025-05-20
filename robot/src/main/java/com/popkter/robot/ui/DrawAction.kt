@@ -27,17 +27,16 @@ import com.popkter.robot.status.RobotStatus
 fun RobotStatus.DrawAction(
     modifier: Modifier,
     finiteTransition: Transition<RobotStatus>,
-    infiniteTransition: InfiniteTransition,
     textMeasurer: TextMeasurer
 ) {
-    val rotate by actionRotate.generateTransition(finiteTransition, infiniteTransition)
-    val scale by actionScale.generateTransition(finiteTransition, infiniteTransition)
-    val scaleX by actionScaleX.generateTransition(finiteTransition, infiniteTransition)
-    val scaleY by actionScaleY.generateTransition(finiteTransition, infiniteTransition)
-    val horizontalTransition by actionHorizontalTransition.generateTransition(finiteTransition, infiniteTransition)
-    val verticalTransition by actionVerticalTransition.generateTransition(finiteTransition, infiniteTransition)
+    val rotate by actionRotate.generateTransition(finiteTransition)
+    val scale by actionScale.generateTransition(finiteTransition)
+    val scaleX by actionScaleX.generateTransition(finiteTransition)
+    val scaleY by actionScaleY.generateTransition(finiteTransition)
+    val horizontalTransition by actionHorizontalTransition.generateTransition(finiteTransition)
+    val verticalTransition by actionVerticalTransition.generateTransition(finiteTransition)
 
-    val sampleRotate by actionSampleRotate.generateTransition(finiteTransition,infiniteTransition)
+    val sampleRotate by actionSampleRotate.generateTransition(finiteTransition)
     if (actionSample.sample.isEmpty()) return
 
 

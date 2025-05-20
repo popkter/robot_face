@@ -1,17 +1,26 @@
 package com.popkter.robot.ext
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.InfiniteRepeatableSpec
 import androidx.compose.animation.core.InfiniteTransition
 import androidx.compose.animation.core.Transition
+import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
+import androidx.compose.runtime.remember
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.core.view.ViewCompat.animate
 import com.popkter.robot.status.RobotStatus
 import com.popkter.robot.status.TransitionProperty
 import kotlinx.serialization.Serializable
+import java.util.UUID
 
 
 const val HEART_SAMPLE = "♥"
@@ -41,14 +50,14 @@ const val PIVOT_OFFSET = 0.707F
 @Composable
 fun TransitionProperty.generateTransition(
     finiteTransition: Transition<RobotStatus>,
-    infiniteTransition: InfiniteTransition,
 ) = with(this) {
     if (infinite) {
-        infiniteTransition.animateFloat(
+        generateInfiniteTransitionWithAnimate()
+/*        infiniteTransition.animateFloat(
             initialValue = initialValue,
             targetValue = targetValue,
             animationSpec = animationSpec as InfiniteRepeatableSpec<Float>
-        )
+        )*/
     } else {
         finiteTransition.animateFloat(
             transitionSpec = { animationSpec as FiniteAnimationSpec<Float> },
@@ -56,6 +65,34 @@ fun TransitionProperty.generateTransition(
         )
     }
 }
+
+
+@Composable
+fun TransitionProperty.generateInfiniteTransitionWithAnimate(): State<Float> {
+    val anim = remember { Animatable(initialValue) }
+    LaunchedEffect(this) {
+        anim.snapTo(initialValue)
+        anim.animateTo(
+            targetValue = targetValue,
+            animationSpec = animationSpec as InfiniteRepeatableSpec<Float>
+        )
+    }
+    return anim.asState()
+}
+
+@Composable
+fun TransitionProperty.generateFiniteTransitionWithAnimate(): State<Float> {
+    val anim = remember { Animatable(initialValue) }
+    LaunchedEffect(this) {
+        anim.snapTo(initialValue)
+        anim.animateTo(
+            targetValue = targetValue,
+            animationSpec = animationSpec as FiniteAnimationSpec<Float>
+        )
+    }
+    return anim.asState()
+}
+
 
 /**
  * 旋转中心点，面部内切水平正方形顶点
@@ -89,7 +126,7 @@ fun PivotLevel.calculateRotateCenterPivot(center: Offset, radius: Float) = when 
 }
 
 @Serializable
-data class ActionSample(val sample: String ="")
+data class ActionSample(val sample: String = "")
 
 
 fun isValidHexColor(hex: String): Boolean {
@@ -115,6 +152,7 @@ fun hexStringToColor(hex: String): Color {
             val blue = colorHex.substring(4, 6).toInt(16)
             Color(red, green, blue) // 默认 Alpha 为 1F（不透明）
         }
+
         8 -> {
             // 解析 #AARRGGBB 格式
             val alpha = colorHex.substring(0, 2).toInt(16)
@@ -123,6 +161,7 @@ fun hexStringToColor(hex: String): Color {
             val blue = colorHex.substring(6, 8).toInt(16)
             Color(red, green, blue, alpha) // 包含 Alpha 通道
         }
+
         else -> throw IllegalArgumentException("Invalid hex color length: $hex")
     }
 }
