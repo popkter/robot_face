@@ -50,17 +50,17 @@ fun RobotMenu(viewModel: RobotViewModel) {
 
     LaunchedEffect(Unit) {
         snapshotFlow { round }.collectLatest {
-            Log.w("RobotMenu","status: ${it.first} round: ${it.second}")
+            Log.w("RobotMenu", "status: ${it.first} round: ${it.second}")
         }
     }
 
-    Row {
-
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
 
         Column(
             modifier = Modifier
-                .weight(1F)
-                .fillMaxHeight(),
+                .weight(1F),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -74,7 +74,9 @@ fun RobotMenu(viewModel: RobotViewModel) {
             modifier = Modifier.weight(1F)
         ) {
             LazyVerticalGrid(
-                modifier = Modifier.fillMaxSize(), columns = GridCells.Fixed(3), contentPadding = PaddingValues(5.dp)
+                modifier = Modifier.fillMaxSize(),
+                columns = GridCells.Fixed(3),
+                contentPadding = PaddingValues(5.dp)
             ) {
                 items(items = RobotStatus.allStates, key = { it.toString() }) { state ->
                     if (current == state) {
@@ -95,7 +97,10 @@ fun RobotMenu(viewModel: RobotViewModel) {
                                 .clickable { viewModel.updateStatus(state) },
                             color = Color.Cyan.copy(alpha = 0.3F),
                         ) {
-                            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
                                 Text(text = state.toString())
                             }
                         }
@@ -116,7 +121,10 @@ fun RobotMenu(viewModel: RobotViewModel) {
                                 },
                             color = Color.Gray.copy(alpha = 0.1F),
                         ) {
-                            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
                                 Text(text = state.toString())
                             }
                         }
